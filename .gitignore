@@ -1,0 +1,6 @@
+.DS_Store
+Podfile.lock
+Pods/
+skyway-callkit-sampler.xcodeproj/project.xcworkspace/xcuserdata/
+skyway-callkit-sampler.xcodeproj/xcuserdata/
+skyway-callkit-sampler.xcworkspace/xcuserdata/
