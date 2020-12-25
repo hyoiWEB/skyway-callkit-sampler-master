@@ -24,6 +24,8 @@ class ViewController: UIViewController {
     @IBOutlet weak var remoteStreamView: SKWVideo!
     @IBOutlet weak var callButton: UIButton!
     @IBOutlet weak var endCallButton: UIButton!
+    @IBOutlet weak var speakerButton: UIButton!
+    @IBOutlet weak var muteButton: UIButton!
     
     //オーディオスイッチ用
     var flag: Bool = false
@@ -90,11 +92,15 @@ class ViewController: UIViewController {
                 //ONにする時に走らせたい処理
                 remoteAudioSpeaker()
                 flag = true
+                let Speaker = UIImage(systemName: "speaker.wave.3.fill")
+                speakerButton.setImage(Speaker, for: .normal)
                 print("スピーカーON")
             } else if flag == true {
                 //OFFにする時に走らせたい処理
                 remoteAudioDefault()
                 flag = false
+                let Speaker = UIImage(systemName: "earpods")
+                speakerButton.setImage(Speaker, for: .normal)
                 print("スピーカーOFF")
             }
         }
@@ -102,14 +108,18 @@ class ViewController: UIViewController {
     //ミュートの切り替え
     @IBAction func muteButton(_ sender: UIButton) {
             if Secondflag == false {
-                //ONにする時に走らせたい処理
+                //ONにした時に走らせたい処理
                 remoteAudioOff()
                 Secondflag = true
+                let muteSpeaker = UIImage(systemName: "speaker.slash.fill")
+                muteButton.setImage(muteSpeaker, for: .normal)
                 print("ミュートON")
             } else if Secondflag == true {
-                //OFFにする時に走らせたい処理
+                //OFFにした時に走らせたい処理
                 remoteAudioON()
                 Secondflag = false
+                let muteSpeaker = UIImage(systemName: "speaker.fill")
+                muteButton.setImage(muteSpeaker, for: .normal)
                 print("ミュートOFF")
             }
         }

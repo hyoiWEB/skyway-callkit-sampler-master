@@ -87,10 +87,10 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Cvl-0e-e4b" userLabel="speaker">
-                                <rect key="frame" x="290" y="60" width="40" height="40"/>
+                                <rect key="frame" x="288" y="60" width="40" height="40"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                                 <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <state key="normal" image="speaker.fill" catalog="system">
+                                <state key="normal" image="earpods" catalog="system">
                                     <preferredSymbolConfiguration key="preferredSymbolConfiguration" configurationType="pointSize" pointSize="40"/>
                                 </state>
                                 <connections>
@@ -98,10 +98,10 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="K49-fb-OHM" userLabel="mute">
-                                <rect key="frame" x="355" y="60" width="40" height="43"/>
+                                <rect key="frame" x="355" y="60" width="40" height="40"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                                 <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <state key="normal" image="speaker.slash" catalog="system">
+                                <state key="normal" image="speaker.fill" catalog="system">
                                     <preferredSymbolConfiguration key="preferredSymbolConfiguration" configurationType="pointSize" pointSize="40"/>
                                 </state>
                                 <connections>
@@ -130,8 +130,10 @@
                         <outlet property="callButton" destination="gHh-e0-3GC" id="Vcx-z5-Sf0"/>
                         <outlet property="endCallButton" destination="n0S-JM-mTC" id="GQC-gg-g9r"/>
                         <outlet property="localStreamView" destination="T2e-dT-jsN" id="hrX-Vk-6K4"/>
+                        <outlet property="muteButton" destination="K49-fb-OHM" id="BUK-aZ-agI"/>
                         <outlet property="myPeerIdLabel" destination="Oal-LP-Nbd" id="BNb-Kd-zVW"/>
                         <outlet property="remoteStreamView" destination="eFh-Yn-dlF" id="MB0-1A-5gb"/>
+                        <outlet property="speakerButton" destination="Cvl-0e-e4b" id="rNa-DW-sfR"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
@@ -140,7 +142,7 @@
         </scene>
     </scenes>
     <resources>
+        <image name="earpods" catalog="system" width="128" height="112"/>
         <image name="speaker.fill" catalog="system" width="128" height="128"/>
-        <image name="speaker.slash" catalog="system" width="124" height="128"/>
     </resources>
 </document>
