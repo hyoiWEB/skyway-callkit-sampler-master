@@ -2,8 +2,8 @@
 //  ViewController.swift
 //  skyway-callkit-sampler
 //
-//  Created by yorifuji on 2019/08/06.
-//  Copyright © 2019 yorifuji. All rights reserved.
+//  Created by hyoi on 2021/01/21.
+//  Copyright © 2021 hyoi. All rights reserved.
 //
 
 import UIKit
