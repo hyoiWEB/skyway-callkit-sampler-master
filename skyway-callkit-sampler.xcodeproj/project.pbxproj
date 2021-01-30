@@ -37,6 +37,7 @@
 
 /* Begin PBXFileReference section */
 		270D947900FF34ABD6AC3A8E /* Pods-skyway-callkit-sampler.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-skyway-callkit-sampler.release.xcconfig"; path = "Target Support Files/Pods-skyway-callkit-sampler/Pods-skyway-callkit-sampler.release.xcconfig"; sourceTree = "<group>"; };
+		4351029325BD355300556F0E /* skyway-callkit-sampler.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "skyway-callkit-sampler.entitlements"; sourceTree = "<group>"; };
 		9D419F27A853891715B97711 /* Pods_skyway_callkit_sampler.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_skyway_callkit_sampler.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B0FC23C083FD15200FC1AD8E /* Pods-skyway-callkit-sampler.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-skyway-callkit-sampler.debug.xcconfig"; path = "Target Support Files/Pods-skyway-callkit-sampler/Pods-skyway-callkit-sampler.debug.xcconfig"; sourceTree = "<group>"; };
 		E325902723005D1000A51155 /* CallCenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CallCenter.swift; sourceTree = "<group>"; };
@@ -123,6 +124,7 @@
 		E3BFA19522F9B9FA00EBE78D /* skyway-callkit-sampler */ = {
 			isa = PBXGroup;
 			children = (
+				4351029325BD355300556F0E /* skyway-callkit-sampler.entitlements */,
 				E325902723005D1000A51155 /* CallCenter.swift */,
 				E3BFA19622F9B9FA00EBE78D /* AppDelegate.swift */,
 				E3BFA19822F9B9FA00EBE78D /* ViewController.swift */,
@@ -512,8 +514,9 @@
 			baseConfigurationReference = B0FC23C083FD15200FC1AD8E /* Pods-skyway-callkit-sampler.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = "skyway-callkit-sampler/skyway-callkit-sampler.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = V527K8L875;
+				DEVELOPMENT_TEAM = MCS8A565ZC;
 				INFOPLIST_FILE = "skyway-callkit-sampler/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -532,8 +535,9 @@
 			baseConfigurationReference = 270D947900FF34ABD6AC3A8E /* Pods-skyway-callkit-sampler.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = "skyway-callkit-sampler/skyway-callkit-sampler.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = V527K8L875;
+				DEVELOPMENT_TEAM = MCS8A565ZC;
 				INFOPLIST_FILE = "skyway-callkit-sampler/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (

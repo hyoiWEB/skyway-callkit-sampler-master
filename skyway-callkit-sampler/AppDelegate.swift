@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import PushKit
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -17,6 +18,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var backgroundTaskID = UIBackgroundTaskIdentifier.invalid
     var timer: Timer?
+    
 
     class var shared: AppDelegate {
         return UIApplication.shared.delegate as! AppDelegate
@@ -24,6 +26,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        setupPushKit()
         return true
     }
 
@@ -55,6 +58,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 }
 
 extension AppDelegate {
+    func setupPushKit() {
+            print("test: setupPushKit()")
+            let voipRegistry: PKPushRegistry = PKPushRegistry(queue: .main)
+            voipRegistry.delegate = self
+            voipRegistry.desiredPushTypes = [.voIP]
+        }
+    
     func startBackgroundTask() {
         backgroundTaskID = UIApplication.shared.beginBackgroundTask(expirationHandler: nil)
         timer = Timer.scheduledTimer(withTimeInterval: 30.0, repeats: false) { timer in
@@ -71,5 +81,23 @@ extension AppDelegate {
             timer?.invalidate()
             timer = nil
         }
+    }
+}
+
+
+extension AppDelegate: PKPushRegistryDelegate {
+    func pushRegistry(_ registry: PKPushRegistry, didUpdate pushCredentials: PKPushCredentials, for type: PKPushType) {
+        print("test: didUpdate pushCredentials")
+        let pkid = pushCredentials.token.map { String(format: "%02.2hhx", $0) }.joined()
+        print("your device token: \(pkid)")
+    }
+
+    func pushRegistry(_ registry: PKPushRegistry, didInvalidatePushTokenFor type: PKPushType) {
+        print("test: didInvalidatePushTokenFor")
+    }
+
+    func pushRegistry(_ registry: PKPushRegistry, didReceiveIncomingPushWith payload: PKPushPayload, for type: PKPushType) {
+        print("test: didReceiveIncomingPushWith")
+        //incomingCall()
     }
 }

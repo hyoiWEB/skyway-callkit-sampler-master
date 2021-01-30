@@ -134,7 +134,7 @@ extension ViewController {
         option.key = AppDelegate.shared.skywayAPIKey
         option.domain = AppDelegate.shared.skywayDomain
 
-        peer = SKWPeer(options: option)
+        peer = SKWPeer(id: "maid-shokan", options: option)
 
         if let _peer = peer {
             self.setupPeerCallBacks(peer: _peer)
