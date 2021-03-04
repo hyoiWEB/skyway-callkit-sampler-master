@@ -8,8 +8,10 @@
 
 
 import UIKit
-import NCMB
+import PushKit
 import UserNotifications
+import SkyWay
+import OneSignal
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -18,12 +20,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     let skywayAPIKey = "bc3292a3-35bd-4289-ac50-359c8100377c"
     let skywayDomain = "p2p-video-chat.app"
 
+    //Callkit
+    let callCenter = CallCenter(supportsVideo: true)
+
     var backgroundTaskID = UIBackgroundTaskIdentifier.invalid
     var timer: Timer?
     
-    // NCMB APIキーの設定
-    let applicationkey = "447e4b01fd3fc00cfddf795ad24ca807351edf5f82052fbc791818994f3b73a9"
-    let clientkey      = "7f403becd92cef8bafd608fd5776036959a9834c285214fbe84c49ff7ae9cc11"
+    var deviceToken: String?
 
     class var shared: AppDelegate {
         return UIApplication.shared.delegate as! AppDelegate
@@ -32,8 +35,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         
-        // SDKの初期化
-        NCMB.initialize(applicationKey: applicationkey, clientKey: clientkey)
+        setupPushKit()
+        
+        OneSignal.setLogLevel(.LL_VERBOSE, visualLevel: .LL_NONE)
+        OneSignal.initWithLaunchOptions(launchOptions)
+        OneSignal.setAppId("253ebb23-922e-4e29-b0af-0a0f8796dfeb")
+        OneSignal.promptForPushNotifications(userResponse: { accepted in
+              print("User accepted notifications: \(accepted)")
+           })
+        
         
         let center = UNUserNotificationCenter.current()
         center.requestAuthorization(options: [.alert, .badge, .sound]) {granted, error in
@@ -53,27 +63,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return true
     }
     
-    // デバイストークンが取得されたら呼び出されるメソッド
-    func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
-        // 端末情報を扱うNCMBInstallationのインスタンスを作成
-        let installation : NCMBInstallation = NCMBInstallation.currentInstallation
-        // デバイストークンの設定
-        installation.setDeviceTokenFromData(data: deviceToken)
-        // 端末情報をデータストアに登録
-        installation.saveInBackground {result in
-            switch result {
-                case .success:
-                    // 端末情報の登録に成功した時の処理
-                    print("トークン取得")
-                    break
-            case let .failure(error):
-                    // 端末情報の登録に失敗した時の処理
-                    print(error)
-                    break
-            }
-        }
-
-    }
     
     func applicationWillResignActive(_ application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
@@ -102,23 +91,31 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 }
 
-//extension AppDelegate {
-//
-//    func startBackgroundTask() {
-//        backgroundTaskID = UIApplication.shared.beginBackgroundTask(expirationHandler: nil)
-//        timer = Timer.scheduledTimer(withTimeInterval: 30.0, repeats: false) { timer in
-//            self.stopBackgroundTask()
-//        }
-//    }
-//
-//    func stopBackgroundTask() {
-//        if backgroundTaskID != UIBackgroundTaskIdentifier.invalid {
-//            UIApplication.shared.endBackgroundTask(backgroundTaskID)
-//            backgroundTaskID = UIBackgroundTaskIdentifier.invalid
-//        }
-//        if timer != nil {
-//            timer?.invalidate()
-//            timer = nil
-//        }
-//    }
-//}
+extension AppDelegate {
+    func setupPushKit() {
+        print("test: setupPushKit()")
+        let voipRegistry: PKPushRegistry = PKPushRegistry(queue: .main)
+        voipRegistry.delegate = self
+        voipRegistry.desiredPushTypes = [.voIP]
+    }
+}
+
+extension AppDelegate: PKPushRegistryDelegate {
+    func pushRegistry(_ registry: PKPushRegistry, didUpdate pushCredentials: PKPushCredentials, for type: PKPushType) {
+        print("test: didUpdate pushCredentials")
+        let pkid = pushCredentials.token.map { String(format: "%02.2hhx", $0) }.joined()
+               print("deviceTokenは: \(pkid)")
+        OneSignal.setExternalUserId(pkid)
+        print("ExternalIDを付与しました")
+        deviceToken = pkid
+    }
+
+    func pushRegistry(_ registry: PKPushRegistry, didInvalidatePushTokenFor type: PKPushType) {
+        print("test: didInvalidatePushTokenFor")
+    }
+
+    func pushRegistry(_ registry: PKPushRegistry, didReceiveIncomingPushWith payload: PKPushPayload, for type: PKPushType) {
+        print("test: didReceiveIncomingPushWith")
+        self.callCenter.IncomingCall(true)
+    }
+}

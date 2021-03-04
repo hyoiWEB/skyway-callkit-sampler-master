@@ -10,6 +10,37 @@ import UIKit
 import CallKit
 import SkyWay
 import AVFoundation
+import OneSignal
+
+//OneSignal
+class NotificationService: UNNotificationServiceExtension {
+    
+    var contentHandler: ((UNNotificationContent) -> Void)?
+    var receivedRequest: UNNotificationRequest!
+    var bestAttemptContent: UNMutableNotificationContent?
+    
+    override func didReceive(_ request: UNNotificationRequest, withContentHandler contentHandler: @escaping (UNNotificationContent) -> Void) {
+        self.receivedRequest = request;
+        self.contentHandler = contentHandler
+        bestAttemptContent = (request.content.mutableCopy() as? UNMutableNotificationContent)
+        
+        if let bestAttemptContent = bestAttemptContent {
+            OneSignal.didReceiveNotificationExtensionRequest(self.receivedRequest, with: self.bestAttemptContent)
+            contentHandler(bestAttemptContent)
+        }
+    }
+    
+    override func serviceExtensionTimeWillExpire() {
+        // Called just before the extension will be terminated by the system.
+        // Use this as an opportunity to deliver your "best attempt" at modified content, otherwise the original push payload will be used.
+        if let contentHandler = contentHandler, let bestAttemptContent =  bestAttemptContent {
+            OneSignal.serviceExtensionTimeWillExpireRequest(self.receivedRequest, with: self.bestAttemptContent)
+            contentHandler(bestAttemptContent)
+        }
+    }
+    
+}
+
 
 class ViewController: UIViewController {
 
@@ -19,18 +50,28 @@ class ViewController: UIViewController {
     fileprivate var localStream: SKWMediaStream?
     fileprivate var remoteStream: SKWMediaStream?
 
-    @IBOutlet weak var myPeerIdLabel: UILabel!
+    //@IBOutlet weak var myPeerIdLabel: UILabel!
     @IBOutlet weak var localStreamView: SKWVideo!
     @IBOutlet weak var remoteStreamView: SKWVideo!
-    @IBOutlet weak var callButton: UIButton!
+    //@IBOutlet weak var callButton: UIButton!
     @IBOutlet weak var endCallButton: UIButton!
     @IBOutlet weak var speakerButton: UIButton!
-    @IBOutlet weak var muteButton: UIButton!
+//    @IBOutlet weak var muteButton: UIButton!
+    
+    var my_peerId: String?
     
     //オーディオスイッチ用
-    var flag: Bool = false
+//    var flag: Bool = false
+    var changeNo = 0
     //ミュートスイッチ用
-    var Secondflag: Bool = false
+//    var Secondflag: Bool = false
+    
+    //Callkitで応答したかどうかの確認用
+    var AnswerCall = 0
+    
+    //通話中か確認用のflag
+    var flag = 0
+
     
     //Callkit
     let callCenter = CallCenter(supportsVideo: true)
@@ -38,7 +79,7 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        self.callButton.isEnabled = false
+        //self.callButton.isEnabled = false
         self.endCallButton.isEnabled = false
     }
 
@@ -78,51 +119,64 @@ class ViewController: UIViewController {
 
     func changeConnectionStatusUI(connected:Bool){
         if connected {
-            self.callButton.isEnabled = false
+            //self.callButton.isEnabled = false
             self.endCallButton.isEnabled = true
         }else{
-            self.callButton.isEnabled = true
+            //self.callButton.isEnabled = true
             self.endCallButton.isEnabled = false
         }
     }
     
     //スピーカーの切り替え
     @IBAction func tappedButton(_ sender: UIButton) {
-            if flag == false {
-                //ONにする時に走らせたい処理
-                remoteAudioSpeaker()
-                flag = true
-                let Speaker = UIImage(systemName: "speaker.wave.3.fill")
-                speakerButton.setImage(Speaker, for: .normal)
-                print("スピーカーON")
-            } else if flag == true {
-                //OFFにする時に走らせたい処理
+        
+            if changeNo == 0 {
+                changeNo = 1
+                //1回目に押した時に走らせたい処理
                 remoteAudioDefault()
-                flag = false
                 let Speaker = UIImage(systemName: "earpods")
                 speakerButton.setImage(Speaker, for: .normal)
-                print("スピーカーOFF")
+                print("スピーカーOFF、イヤホンON")
+                
+            } else if changeNo == 1 {
+                changeNo = 2
+               
+                //2回目に押した時に走らせたい処理
+                remoteAudioOff()
+                let Speaker = UIImage(systemName: "speaker.slash.fill")
+                speakerButton.setImage(Speaker, for: .normal)
+                print("ミュートON")
+                
+            } else if changeNo == 2 {
+                changeNo = 0
+                
+                //3回目に押した時に走らせたい処理
+                remoteAudioON()
+                remoteAudioSpeaker()
+                let Speaker = UIImage(systemName: "speaker.wave.2.fill")
+                speakerButton.setImage(Speaker, for: .normal)
+                print("スピーカーON、イヤホンOFF")
             }
         }
     
-    //ミュートの切り替え
-    @IBAction func muteButton(_ sender: UIButton) {
-            if Secondflag == false {
-                //ONにした時に走らせたい処理
-                remoteAudioOff()
-                Secondflag = true
-                let muteSpeaker = UIImage(systemName: "speaker.slash.fill")
-                muteButton.setImage(muteSpeaker, for: .normal)
-                print("ミュートON")
-            } else if Secondflag == true {
-                //OFFにした時に走らせたい処理
-                remoteAudioON()
-                Secondflag = false
-                let muteSpeaker = UIImage(systemName: "speaker.fill")
-                muteButton.setImage(muteSpeaker, for: .normal)
-                print("ミュートOFF")
-            }
-        }
+//    //ミュートの切り替え
+//    @IBAction func muteButton(_ sender: UIButton) {
+//            if Secondflag == false {
+//                //ONにした時に走らせたい処理
+//                remoteAudioOff()
+//                Secondflag = true
+//                let muteSpeaker = UIImage(systemName: "speaker.slash.fill")
+//                muteButton.setImage(muteSpeaker, for: .normal)
+//                print("ミュートON")
+//            } else if Secondflag == true {
+//                //OFFにした時に走らせたい処理
+//                remoteAudioON()
+//                Secondflag = false
+//                let muteSpeaker = UIImage(systemName: "speaker.fill")
+//                muteButton.setImage(muteSpeaker, for: .normal)
+//                print("ミュートOFF")
+//            }
+//        }
 }
 
 // MARK: skyway
@@ -134,8 +188,9 @@ extension ViewController {
         option.key = AppDelegate.shared.skywayAPIKey
         option.domain = AppDelegate.shared.skywayDomain
 
-        peer = SKWPeer(id: "maid-shokan", options: option)
-
+        //peer = SKWPeer(id: "maid-shokan", options: option)
+        peer = SKWPeer(options: option)
+        
         if let _peer = peer {
             self.setupPeerCallBacks(peer: _peer)
             self.setupStream(peer: _peer)
@@ -154,6 +209,7 @@ extension ViewController {
         self.localStream?.addVideoRenderer(self.localStreamView, track: 0)
     }
 
+    
     func call(targetPeerId:String){
         let option = SKWCallOption()
         if let mediaConnection = self.peer?.call(withId: targetPeerId, stream: self.localStream, options: option){
@@ -221,10 +277,18 @@ extension ViewController{
         peer.on(SKWPeerEventEnum.PEER_EVENT_OPEN) { obj in
             if let peerId = obj as? String{
                 DispatchQueue.main.async {
-                    self.myPeerIdLabel.text = peerId
+                    //self.myPeerIdLabel.text = peerId
                     self.changeConnectionStatusUI(connected: false)
                 }
                 print("your peerId: \(peerId)")
+                
+                //my_peerIdに格納
+                self.my_peerId = peerId
+                print("あなたのpeerIdは: \(self.my_peerId!)")
+                
+                //OneSignalのデバイスTokenにpeerIdをタグ付け
+                OneSignal.sendTag("PeerID", value: peerId)
+                print("Tagを付与しました")
             }
         }
 
@@ -252,6 +316,7 @@ extension ViewController{
 
     func setupMediaConnectionCallbacks(mediaConnection:SKWMediaConnection){
 
+        if AnswerCall == 1 {
         // MARK: MEDIACONNECTION_EVENT_STREAM
         mediaConnection.on(SKWMediaConnectionEventEnum.MEDIACONNECTION_EVENT_STREAM) { obj in
             if let msStream = obj as? SKWMediaStream{
@@ -261,7 +326,12 @@ extension ViewController{
                 }
                 self.changeConnectionStatusUI(connected: true)
                 self.callCenter.Connected()
+                self.flag = 1
+                print("flagは",self.flag)
             }
+        }
+        }else{
+            print("着信を拒否しています")
         }
 
         // MARK: MEDIACONNECTION_EVENT_CLOSE
@@ -275,6 +345,10 @@ extension ViewController{
                 }
                 self.changeConnectionStatusUI(connected: false)
                 self.callCenter.EndCall()
+                self.flag = 0
+                print("flagは",self.flag)
+                self.AnswerCall = 0
+                print("AnswerCall",self.AnswerCall)
             }
         }
     }
@@ -308,7 +382,11 @@ extension ViewController: CXProviderDelegate {
         action.fulfill()
     }
 
+    //Callkitで応答を選択した時の動作
     func provider(_ provider: CXProvider, perform action: CXAnswerCallAction) {
+        self.AnswerCall = 1
+        print("AnswerCall",AnswerCall)
+        
         callCenter.ConfigureAudioSession()
         if let peer = self.dataConnection?.peer {
             self.call(targetPeerId: peer)
@@ -317,6 +395,9 @@ extension ViewController: CXProviderDelegate {
     }
 
     func provider(_ provider: CXProvider, perform action: CXEndCallAction) {
+        self.AnswerCall = 0
+        print("AnswerCall",AnswerCall)
+        
         self.dataConnection?.close()
         self.mediaConnection?.close()
         action.fulfill()

@@ -19,8 +19,11 @@ class CallCenter: NSObject {
 
     init(supportsVideo: Bool) {
         let providerConfiguration = CXProviderConfiguration(localizedName: "SkyWay(CallKit)")
+        providerConfiguration.maximumCallsPerCallGroup = 1
         providerConfiguration.supportsVideo = supportsVideo
         provider = CXProvider(configuration: providerConfiguration)
+        //configuration.iconTemplateImageData = UIImage(named:"app_icon").pngData() // CallKitの通話UIに表示されるアプリへの導線ボタン画像
+
     }
 
     func setup(_ delegate: CXProviderDelegate) {

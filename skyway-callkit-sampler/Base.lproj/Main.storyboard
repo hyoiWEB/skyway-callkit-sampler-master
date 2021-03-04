@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17506" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
     <device id="retina6_5" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17505"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -16,19 +16,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gHh-e0-3GC">
-                                <rect key="frame" x="157" y="423" width="100" height="50"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="100" id="RuL-pH-eWB"/>
-                                    <constraint firstAttribute="height" constant="50" id="h26-r8-WKs"/>
-                                </constraints>
-                                <state key="normal" title="Call"/>
-                                <connections>
-                                    <action selector="tapCall" destination="BYZ-38-t0r" eventType="touchUpInside" id="a2P-7n-QjA"/>
-                                </connections>
-                            </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="n0S-JM-mTC">
-                                <rect key="frame" x="157" y="762" width="100" height="50"/>
+                                <rect key="frame" x="157" y="812" width="100" height="50"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="100" id="ZtU-Cw-Irm"/>
                                     <constraint firstAttribute="height" constant="50" id="xPS-P7-mic"/>
@@ -38,11 +27,12 @@
                                     <action selector="tapEndCall" destination="BYZ-38-t0r" eventType="touchUpInside" id="KHW-rQ-4k4"/>
                                 </connections>
                             </button>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eFh-Yn-dlF" userLabel="remoteView" customClass="SKWVideo">
-                                <rect key="frame" x="0.0" y="44" width="414" height="708"/>
+                            <view contentMode="scaleToFill" id="eFh-Yn-dlF" userLabel="remoteView" customClass="SKWVideo">
+                                <rect key="frame" x="0.0" y="44" width="414" height="760"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="T2e-dT-jsN" userLabel="localView" customClass="SKWVideo">
-                                        <rect key="frame" x="207" y="552.66666666666663" width="207" height="155.33333333333337"/>
+                                        <rect key="frame" x="207" y="604.66666666666663" width="207" height="155.33333333333337"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="local" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KXk-FD-SIB">
                                                 <rect key="frame" x="53.666666666666686" y="10" width="100" height="30"/>
@@ -62,20 +52,27 @@
                                             <constraint firstItem="KXk-FD-SIB" firstAttribute="centerX" secondItem="T2e-dT-jsN" secondAttribute="centerX" id="fTZ-YA-sgt"/>
                                         </constraints>
                                     </view>
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Cvl-0e-e4b" userLabel="speaker">
+                                        <rect key="frame" x="354" y="8" width="40" height="40"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
+                                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <state key="normal" image="speaker.wave.2.fill" catalog="system">
+                                            <preferredSymbolConfiguration key="preferredSymbolConfiguration" configurationType="pointSize" pointSize="40"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="tappedButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="gUf-rj-W6T"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                                 <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstItem="T2e-dT-jsN" firstAttribute="leading" secondItem="eFh-Yn-dlF" secondAttribute="centerX" id="9JU-OE-Fxq"/>
+                                    <constraint firstAttribute="height" constant="760" id="Kia-jC-mNg"/>
                                     <constraint firstAttribute="bottom" secondItem="T2e-dT-jsN" secondAttribute="bottom" id="dSL-nE-GqF"/>
+                                    <constraint firstAttribute="width" constant="414" id="nrF-1W-kvY"/>
                                     <constraint firstAttribute="trailing" secondItem="T2e-dT-jsN" secondAttribute="trailing" id="uPc-aH-Yan"/>
                                 </constraints>
                             </view>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Oal-LP-Nbd">
-                                <rect key="frame" x="207" y="842" width="0.0" height="0.0"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="remote" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IJa-nR-C4E">
                                 <rect key="frame" x="157" y="54" width="100" height="30"/>
                                 <constraints>
@@ -86,52 +83,22 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Cvl-0e-e4b" userLabel="speaker">
-                                <rect key="frame" x="288" y="60" width="40" height="40"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
-                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <state key="normal" image="earpods" catalog="system">
-                                    <preferredSymbolConfiguration key="preferredSymbolConfiguration" configurationType="pointSize" pointSize="40"/>
-                                </state>
-                                <connections>
-                                    <action selector="tappedButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="gUf-rj-W6T"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="K49-fb-OHM" userLabel="mute">
-                                <rect key="frame" x="355" y="60" width="40" height="40"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
-                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <state key="normal" image="speaker.fill" catalog="system">
-                                    <preferredSymbolConfiguration key="preferredSymbolConfiguration" configurationType="pointSize" pointSize="40"/>
-                                </state>
-                                <connections>
-                                    <action selector="muteButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Oas-9o-pdt"/>
-                                </connections>
-                            </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="eFh-Yn-dlF" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="5j9-9f-ctp"/>
                             <constraint firstItem="n0S-JM-mTC" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="centerX" constant="-50" id="7nT-Hc-PUm"/>
-                            <constraint firstItem="gHh-e0-3GC" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" constant="-389" id="8Wq-vp-EWy"/>
                             <constraint firstItem="eFh-Yn-dlF" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="ANp-uK-ITa"/>
                             <constraint firstItem="IJa-nR-C4E" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="10" id="B3x-0i-V9d"/>
-                            <constraint firstItem="Oal-LP-Nbd" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="Kn5-9r-t3g"/>
-                            <constraint firstItem="gHh-e0-3GC" firstAttribute="trailing" secondItem="8bC-Xf-vdC" secondAttribute="centerX" constant="50" id="MTw-G5-GBI"/>
-                            <constraint firstItem="Oal-LP-Nbd" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" constant="-20" id="TIh-3r-ysh"/>
-                            <constraint firstItem="gHh-e0-3GC" firstAttribute="top" secondItem="eFh-Yn-dlF" secondAttribute="bottom" constant="-329" id="VnD-eI-xII"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="eFh-Yn-dlF" secondAttribute="trailing" id="Y1r-nJ-PPz"/>
-                            <constraint firstItem="n0S-JM-mTC" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" constant="-50" id="bd8-vA-uq2"/>
+                            <constraint firstItem="n0S-JM-mTC" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="bd8-vA-uq2"/>
                             <constraint firstItem="IJa-nR-C4E" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="gQ7-Zi-CyP"/>
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="callButton" destination="gHh-e0-3GC" id="Vcx-z5-Sf0"/>
                         <outlet property="endCallButton" destination="n0S-JM-mTC" id="GQC-gg-g9r"/>
                         <outlet property="localStreamView" destination="T2e-dT-jsN" id="hrX-Vk-6K4"/>
-                        <outlet property="muteButton" destination="K49-fb-OHM" id="BUK-aZ-agI"/>
-                        <outlet property="myPeerIdLabel" destination="Oal-LP-Nbd" id="BNb-Kd-zVW"/>
                         <outlet property="remoteStreamView" destination="eFh-Yn-dlF" id="MB0-1A-5gb"/>
                         <outlet property="speakerButton" destination="Cvl-0e-e4b" id="rNa-DW-sfR"/>
                     </connections>
@@ -142,7 +109,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="earpods" catalog="system" width="128" height="112"/>
-        <image name="speaker.fill" catalog="system" width="128" height="128"/>
+        <image name="speaker.wave.2.fill" catalog="system" width="128" height="90"/>
     </resources>
 </document>
