@@ -24,6 +24,8 @@
 	<string>カメラを使用します</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>マイクを使用します</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>アプリ起動中のみ位置情報を使用します</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>audio</string>
