@@ -57,6 +57,7 @@ class ViewController: UIViewController {
     @IBOutlet weak var endCallButton: UIButton!
     @IBOutlet weak var speakerButton: UIButton!
 //    @IBOutlet weak var muteButton: UIButton!
+    @IBOutlet weak var toggleButton: UIButton!
     
     var my_peerId: String?
     
@@ -97,6 +98,33 @@ class ViewController: UIViewController {
         callCenter.setup(self)
 //        callCenter.setupNotifications()
         setup()
+    }
+    
+    
+    
+    @IBAction func onSwitchCameraButtonClicked (_ sender:Any) {
+        print("ボタンを押しました")
+        if nil == localStream {
+            return
+        }
+            print("リターンしました")
+
+        var pos:SKWCameraPositionEnum = (localStream?.getCameraPosition())!
+        print(pos,"宣言しました")
+
+        if pos == SKWCameraPositionEnum.CAMERA_POSITION_BACK {
+            pos = SKWCameraPositionEnum.CAMERA_POSITION_FRONT
+            print(pos,"posが変わりました1")
+        } else if pos == SKWCameraPositionEnum.CAMERA_POSITION_FRONT {
+            pos = SKWCameraPositionEnum.CAMERA_POSITION_BACK
+            print(pos,"posが変わりました2")
+        } else {
+            return
+                print("なし")
+
+        }
+        localStream?.setCameraPosition(pos)
+        print("全てわりました2")
     }
 
     @IBAction func tapCall(){
