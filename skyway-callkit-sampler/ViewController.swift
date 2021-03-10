@@ -97,9 +97,11 @@ class ViewController: UIViewController {
         let encoder = JSONEncoder()
         encoder.outputFormatting = .prettyPrinted
         encoder.dateEncodingStrategy = .iso8601
+        let peer = try! encoder.encode(my_peerId)
         let data = try! encoder.encode(token)
-        let jsonstr:String = String(data: data, encoding: .utf8)!
-        socket.emit("Token", jsonstr)
+        let jsonPeer:String = String(data: peer, encoding: .utf8)!
+        let jsonToken:String = String(data: data, encoding: .utf8)!
+        socket.emit("Token", jsonPeer,jsonToken)
         print("タイマー実行中")
     }
     
