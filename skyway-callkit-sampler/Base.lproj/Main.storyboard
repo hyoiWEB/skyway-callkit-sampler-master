@@ -13,7 +13,7 @@
         <!--View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="skyway_callkit_sampler" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController modalPresentationStyle="fullScreen" id="BYZ-38-t0r" customClass="ViewController" customModule="skyway_callkit_sampler" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -54,9 +54,8 @@
                                             <constraint firstItem="KXk-FD-SIB" firstAttribute="centerX" secondItem="T2e-dT-jsN" secondAttribute="centerX" id="fTZ-YA-sgt"/>
                                         </constraints>
                                     </view>
-                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Cvl-0e-e4b" userLabel="speaker">
-                                        <rect key="frame" x="325" y="8" width="40" height="40"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Cvl-0e-e4b" userLabel="speaker">
+                                        <rect key="frame" x="309" y="8" width="56" height="40"/>
                                         <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <state key="normal" image="speaker.wave.2.fill" catalog="system">
                                             <preferredSymbolConfiguration key="preferredSymbolConfiguration" configurationType="pointSize" pointSize="40"/>
@@ -65,8 +64,8 @@
                                             <action selector="tappedButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="gUf-rj-W6T"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Q7P-jJ-iLU">
-                                        <rect key="frame" x="325" y="76" width="30.333333333333314" height="44"/>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Q7P-jJ-iLU">
+                                        <rect key="frame" x="283.66666666666669" y="90" width="30.333333333333314" height="22.333333333333329"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                         <state key="normal">
                                             <imageReference key="image" image="camera.rotate.fill" catalog="system" symbolScale="large"/>
@@ -78,11 +77,17 @@
                                 </subviews>
                                 <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="Q7P-jJ-iLU" secondAttribute="trailing" constant="50" id="1O2-gm-MwE"/>
+                                    <constraint firstAttribute="trailing" secondItem="Q7P-jJ-iLU" secondAttribute="trailing" constant="61.670000000000002" id="6b7-6W-zEe"/>
                                     <constraint firstAttribute="trailing" secondItem="Q7P-jJ-iLU" secondAttribute="trailing" constant="50" id="9Ao-dJ-hfm"/>
                                     <constraint firstItem="T2e-dT-jsN" firstAttribute="leading" secondItem="eFh-Yn-dlF" secondAttribute="centerX" id="9JU-OE-Fxq"/>
+                                    <constraint firstItem="Q7P-jJ-iLU" firstAttribute="top" secondItem="Cvl-0e-e4b" secondAttribute="bottom" constant="42" id="BYr-nU-hnm"/>
                                     <constraint firstAttribute="height" constant="760" id="Kia-jC-mNg"/>
                                     <constraint firstAttribute="bottom" secondItem="T2e-dT-jsN" secondAttribute="bottom" id="dSL-nE-GqF"/>
+                                    <constraint firstAttribute="trailing" secondItem="Cvl-0e-e4b" secondAttribute="trailing" constant="49" id="eLv-Ow-D1l"/>
+                                    <constraint firstItem="Cvl-0e-e4b" firstAttribute="top" secondItem="eFh-Yn-dlF" secondAttribute="top" constant="8" id="eTJ-KF-yg1"/>
                                     <constraint firstAttribute="width" constant="414" id="nrF-1W-kvY"/>
+                                    <constraint firstAttribute="trailing" secondItem="Q7P-jJ-iLU" secondAttribute="trailing" constant="53.670000000000002" id="tfo-DX-0KW"/>
                                     <constraint firstAttribute="trailing" secondItem="T2e-dT-jsN" secondAttribute="trailing" id="uPc-aH-Yan"/>
                                     <constraint firstAttribute="trailing" secondItem="Q7P-jJ-iLU" secondAttribute="trailing" constant="100" id="wud-ft-vyA"/>
                                 </constraints>
@@ -98,8 +103,11 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="k2K-2o-pbI">
-                                <rect key="frame" x="51" y="812" width="46" height="30"/>
-                                <state key="normal" title="Button"/>
+                                <rect key="frame" x="51" y="812" width="77" height="30"/>
+                                <state key="normal" title="send Gmail"/>
+                                <connections>
+                                    <action selector="sendButtonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="eja-H2-s2p"/>
+                                </connections>
                             </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
@@ -132,7 +140,7 @@
         <!--Sign Up View Controller-->
         <scene sceneID="YDE-iv-83q">
             <objects>
-                <viewController id="4RB-bo-Owk" customClass="signUpViewController" customModule="SMTPClient" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="4RB-bo-Owk" customClass="signUpViewController" customModule="skyway_callkit_sampler" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="BNu-2Q-vWH">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -175,6 +183,9 @@
                                 <rect key="frame" x="84" y="570" width="246" height="63"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="次へ"/>
+                                <connections>
+                                    <segue destination="BYZ-38-t0r" kind="show" id="ii3-cj-pwn"/>
+                                </connections>
                             </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="NoV-ol-NfE"/>

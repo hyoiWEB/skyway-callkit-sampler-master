@@ -42,13 +42,16 @@ class NotificationService: UNNotificationServiceExtension {
 }
 
 
-class ViewController: UIViewController {
+class ViewController: UIViewController, UITextFieldDelegate {
 
     fileprivate var peer: SKWPeer?
     fileprivate var dataConnection: SKWDataConnection?
     fileprivate var mediaConnection: SKWMediaConnection?
     fileprivate var localStream: SKWMediaStream?
     fileprivate var remoteStream: SKWMediaStream?
+    var gmailaddress:String=uservalue[0]
+    var gmailpass:String=uservalue[1]
+    var peeridValue:Array<String>=[]
 
     //@IBOutlet weak var myPeerIdLabel: UILabel!
     @IBOutlet weak var localStreamView: SKWVideo!
@@ -58,6 +61,7 @@ class ViewController: UIViewController {
     @IBOutlet weak var speakerButton: UIButton!
 //    @IBOutlet weak var muteButton: UIButton!
     @IBOutlet weak var toggleButton: UIButton!
+    
     
     var my_peerId: String?
     
@@ -93,6 +97,8 @@ class ViewController: UIViewController {
             self.present(alert, animated: true, completion: nil)
             return
         }
+        self.mediaConnection?.close()
+        self.peer?.destroy()
 
         checkPermissionAudio()
         callCenter.setup(self)
@@ -100,6 +106,46 @@ class ViewController: UIViewController {
         setup()
     }
     
+    @IBAction func sendButtonTapped(_ sender: UIButton) {
+        print("ボタンが押されました")
+        // Gmailの場合、Gmail側の設定で安全性の低いアプリへのアクセスを無効 -> 有効にする必要がある
+        let smtpSession = MCOSMTPSession()
+        smtpSession.hostname = "smtp.gmail.com"
+        smtpSession.username = gmailaddress
+        print("Gmailアドレス：",gmailaddress)
+        // 送信元のSMTPサーバーのusername（Gmailアドレス）
+        smtpSession.password = uservalue[1]
+        print("Gmailパスワード：",uservalue[1])
+// 送信元のSMTPサーバーのpasword（Gmailパスワード）
+        smtpSession.port = 465
+        smtpSession.authType = MCOAuthType.saslPlain
+        smtpSession.connectionType = MCOConnectionType.TLS
+        smtpSession.connectionLogger = {(connectionID, type, data) in
+            if data != nil {
+                if let string = NSString(data: data!, encoding: String.Encoding.utf8.rawValue){
+                    print("Connectionloggerはこれ、",string)
+                }
+            }
+        }
+
+        let builder = MCOMessageBuilder()
+        builder.header.to = [MCOAddress(displayName: "山田太郎さんへ", mailbox: "usingfordevelop@gmail.com")]
+        // 送信先の表示名とアドレス
+        builder.header.from = MCOAddress(displayName: "山田太郎2さんから", mailbox: gmailaddress)   // 送信元の表示名とアドレス
+        builder.header.subject = "peerIDを受信しました。"
+//        builder.htmlBody = "Yo Rool, this is a test message!"
+        builder.textBody = "送信者のPeerID: \(self.peeridValue[0])"
+        let rfc822Data = builder.data()
+        let sendOperation = smtpSession.sendOperation(with: rfc822Data)
+        sendOperation?.start { (error) -> Void in
+            if error != nil {
+                print("メールの送信に失敗しました！")
+            } else {
+                print("メールの送信が成功しました！")
+
+            }
+        }
+    }
     
     
     @IBAction func onSwitchCameraButtonClicked (_ sender:Any) {
@@ -313,6 +359,8 @@ extension ViewController{
                 //my_peerIdに格納
                 self.my_peerId = peerId
                 print("あなたのpeerIdは: \(self.my_peerId!)")
+                self.peeridValue.insert(peerId, at: 0)
+                print("代入後の値はこれ",self.peeridValue)
                 
                 //OneSignalのデバイスTokenにpeerIdをタグ付け
                 OneSignal.sendTag("PeerID", value: peerId)
