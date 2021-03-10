@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		431F061625F8B0560053819C /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431F061525F8B0560053819C /* SceneDelegate.swift */; };
 		CA37911A8028E0A6AF6AF88B /* Pods_skyway_callkit_sampler.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D419F27A853891715B97711 /* Pods_skyway_callkit_sampler.framework */; };
 		E325902823005D1000A51155 /* CallCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = E325902723005D1000A51155 /* CallCenter.swift */; };
 		E3BFA19722F9B9FA00EBE78D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3BFA19622F9B9FA00EBE78D /* AppDelegate.swift */; };
@@ -37,6 +38,7 @@
 
 /* Begin PBXFileReference section */
 		270D947900FF34ABD6AC3A8E /* Pods-skyway-callkit-sampler.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-skyway-callkit-sampler.release.xcconfig"; path = "Target Support Files/Pods-skyway-callkit-sampler/Pods-skyway-callkit-sampler.release.xcconfig"; sourceTree = "<group>"; };
+		431F061525F8B0560053819C /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		4351029325BD355300556F0E /* skyway-callkit-sampler.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "skyway-callkit-sampler.entitlements"; sourceTree = "<group>"; };
 		9D419F27A853891715B97711 /* Pods_skyway_callkit_sampler.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_skyway_callkit_sampler.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B0FC23C083FD15200FC1AD8E /* Pods-skyway-callkit-sampler.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-skyway-callkit-sampler.debug.xcconfig"; path = "Target Support Files/Pods-skyway-callkit-sampler/Pods-skyway-callkit-sampler.debug.xcconfig"; sourceTree = "<group>"; };
@@ -127,6 +129,7 @@
 				4351029325BD355300556F0E /* skyway-callkit-sampler.entitlements */,
 				E325902723005D1000A51155 /* CallCenter.swift */,
 				E3BFA19622F9B9FA00EBE78D /* AppDelegate.swift */,
+				431F061525F8B0560053819C /* SceneDelegate.swift */,
 				E3BFA19822F9B9FA00EBE78D /* ViewController.swift */,
 				E3BFA19A22F9B9FA00EBE78D /* Main.storyboard */,
 				E3BFA19D22F9B9FB00EBE78D /* Assets.xcassets */,
@@ -337,6 +340,7 @@
 				E3BFA19922F9B9FA00EBE78D /* ViewController.swift in Sources */,
 				E325902823005D1000A51155 /* CallCenter.swift in Sources */,
 				E3BFA19722F9B9FA00EBE78D /* AppDelegate.swift in Sources */,
+				431F061625F8B0560053819C /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

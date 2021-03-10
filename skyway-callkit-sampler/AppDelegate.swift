@@ -15,10 +15,15 @@ import OneSignal
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
+    
+    weak var viewController : ViewController?
 
     var window: UIWindow?
     let skywayAPIKey = "bc3292a3-35bd-4289-ac50-359c8100377c"
     let skywayDomain = "p2p-video-chat.app"
+
+    //let manager = SocketManager(socketURL: URL(string:"http://localhost:3000")!, config: [.log(true), .compress])
+        //var socket : SocketIOClient!
 
     //Callkit
     let callCenter = CallCenter(supportsVideo: true)
@@ -26,8 +31,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var backgroundTaskID = UIBackgroundTaskIdentifier.invalid
     var timer: Timer?
     
-    var deviceToken: String?
-
     class var shared: AppDelegate {
         return UIApplication.shared.delegate as! AppDelegate
     }
@@ -105,9 +108,7 @@ extension AppDelegate: PKPushRegistryDelegate {
         print("test: didUpdate pushCredentials")
         let pkid = pushCredentials.token.map { String(format: "%02.2hhx", $0) }.joined()
                print("deviceTokenは: \(pkid)")
-        OneSignal.setExternalUserId(pkid)
-        print("ExternalIDを付与しました")
-        deviceToken = pkid
+        viewController?.loadRequest(for: pkid)
     }
 
     func pushRegistry(_ registry: PKPushRegistry, didInvalidatePushTokenFor type: PKPushType) {
