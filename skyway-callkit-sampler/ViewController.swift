@@ -177,12 +177,12 @@ class ViewController: UIViewController, UITextFieldDelegate {
         }
 
         let builder = MCOMessageBuilder()
-        builder.header.to = [MCOAddress(displayName: "山田太郎さんへ", mailbox: "usingfordevelop@gmail.com")]
+        builder.header.to = [MCOAddress(displayName: "西口さんへテスト", mailbox: "menkai.info@gmail.com")]
         // 送信先の表示名とアドレス
         builder.header.from = MCOAddress(displayName: "山田太郎2さんから", mailbox: gmailaddress)   // 送信元の表示名とアドレス
-        builder.header.subject = "peerIDを受信しました。"
+        builder.header.subject = "Genchi Connect Me!"
 //        builder.htmlBody = "Yo Rool, this is a test message!"
-        builder.textBody = "送信者のPeerID: \(self.peeridValue[0])"
+        builder.textBody = "私のIDは[\(self.peeridValue[0])]です。\nhttps://genchi.net/y.html?key=\(self.peeridValue[0])"
         let rfc822Data = builder.data()
         let sendOperation = smtpSession.sendOperation(with: rfc822Data)
         sendOperation?.start { (error) -> Void in
