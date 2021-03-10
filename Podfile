@@ -5,4 +5,5 @@ target 'skyway-callkit-sampler' do
   pod 'mailcore2-ios'
   pod 'SkyWay'
   pod 'OneSignal'
+  pod 'Socket.IO-Client-Swift'
 end

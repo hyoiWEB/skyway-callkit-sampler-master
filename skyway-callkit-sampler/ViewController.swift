@@ -11,6 +11,7 @@ import CallKit
 import SkyWay
 import AVFoundation
 import OneSignal
+import SocketIO
 
 //OneSignal
 class NotificationService: UNNotificationServiceExtension {
@@ -63,7 +64,10 @@ class ViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var toggleButton: UIButton!
     
     
+    
     var my_peerId: String?
+    var token: String?
+    
     
     //オーディオスイッチ用
 //    var flag: Bool = false
@@ -78,11 +82,53 @@ class ViewController: UIViewController, UITextFieldDelegate {
     var flag = 0
 
     
+    let manager = SocketManager(socketURL: URL(string:"http://192.168.22.43:3000/")!, config: [.log(true), .compress])
+    var socket : SocketIOClient!
+
+    
     //Callkit
     let callCenter = CallCenter(supportsVideo: true)
+    
+    
+    //tokenにdeviceTokenを代入
+    func loadRequest(for deviceTokenString : String){
+        
+        token = deviceTokenString
+    }
 
+
+    //タイマーで実行される関数
+    @objc func sendingss(){
+        let encoder = JSONEncoder()
+        encoder.outputFormatting = .prettyPrinted
+        encoder.dateEncodingStrategy = .iso8601
+        let peer = try! encoder.encode(my_peerId)
+        let data = try! encoder.encode(token)
+        let jsonPeer:String = String(data: peer, encoding: .utf8)!
+        let jsonToken:String = String(data: data, encoding: .utf8)!
+        socket.emit("Token", jsonPeer,jsonToken)
+        print("タイマー実行中")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+            appDelegate.viewController = self
+        //タイマー
+        var timer = Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(sendingss), userInfo: nil, repeats: false)
+        
+        socket = manager.defaultSocket
+
+                socket.on(clientEvent: .connect){ data, ack in
+                    print("socket connected!")
+                }
+
+                socket.on(clientEvent: .disconnect){data, ack in
+                    print("socket disconnected!")
+                }
+
+                socket.connect()
+        
         // Do any additional setup after loading the view.
         //self.callButton.isEnabled = false
         self.endCallButton.isEnabled = false
@@ -90,6 +136,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        
         if AppDelegate.shared.skywayAPIKey == nil || AppDelegate.shared.skywayDomain == nil {
             let alert = UIAlertController(title: "エラー", message: "APIKEYとDOMAINがAppDelegateに設定されていません", preferredStyle: .alert)
             let ok = UIAlertAction(title: "OK", style: .default)
@@ -100,6 +147,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
         self.mediaConnection?.close()
         self.peer?.destroy()
 
+        //SocketHelper.shared.sendMessage(message: "繋がった！")
         checkPermissionAudio()
         callCenter.setup(self)
 //        callCenter.setupNotifications()
