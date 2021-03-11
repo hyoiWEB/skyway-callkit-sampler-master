@@ -16,6 +16,7 @@ class CallCenter: NSObject {
     private let controller = CXCallController()
     private let provider: CXProvider
     private var uuid = UUID()
+    
 
     init(supportsVideo: Bool) {
         let providerConfiguration = CXProviderConfiguration(localizedName: "SkyWay(CallKit)")
@@ -25,6 +26,7 @@ class CallCenter: NSObject {
         //configuration.iconTemplateImageData = UIImage(named:"app_icon").pngData() // CallKitの通話UIに表示されるアプリへの導線ボタン画像
 
     }
+
 
     func setup(_ delegate: CXProviderDelegate) {
         provider.setDelegate(delegate, queue: nil)

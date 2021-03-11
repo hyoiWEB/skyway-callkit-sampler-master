@@ -16,8 +16,7 @@ import OneSignal
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
     
-    weak var viewController : ViewController?
-
+    
     var window: UIWindow?
     let skywayAPIKey = "bc3292a3-35bd-4289-ac50-359c8100377c"
     let skywayDomain = "p2p-video-chat.app"
@@ -109,7 +108,8 @@ extension AppDelegate: PKPushRegistryDelegate {
         print("test: didUpdate pushCredentials")
         let pkid = pushCredentials.token.map { String(format: "%02.2hhx", $0) }.joined()
                print("deviceTokenは: \(pkid)")
-        viewController?.loadRequest(for: pkid)
+        token = pkid
+        
     }
 
     func pushRegistry(_ registry: PKPushRegistry, didInvalidatePushTokenFor type: PKPushType) {

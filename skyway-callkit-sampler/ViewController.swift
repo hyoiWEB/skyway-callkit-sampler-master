@@ -13,6 +13,8 @@ import AVFoundation
 import OneSignal
 import SocketIO
 
+var token: String?
+
 //OneSignal
 class NotificationService: UNNotificationServiceExtension {
     
@@ -64,9 +66,8 @@ class ViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var toggleButton: UIButton!
     
     
-    
+    //peerIDを格納
     var my_peerId: String?
-    var token: String?
     
     
     //オーディオスイッチ用
@@ -76,13 +77,11 @@ class ViewController: UIViewController, UITextFieldDelegate {
 //    var Secondflag: Bool = false
     
     //Callkitで応答したかどうかの確認用
-    var AnswerCall = 0
+    var AnswerCall = true
     
-    //通話中か確認用のflag
-    var flag = 0
 
     
-    let manager = SocketManager(socketURL: URL(string:"http://192.168.22.43:3000/")!, config: [.log(true), .compress])
+    let manager = SocketManager(socketURL: URL(string:"https://skyway-voip.herokuapp.com/:3000")!, config: [.log(true), .compress])
     var socket : SocketIOClient!
 
     
@@ -91,29 +90,33 @@ class ViewController: UIViewController, UITextFieldDelegate {
     
     
     //tokenにdeviceTokenを代入
-    func loadRequest(for deviceTokenString : String){
-        
-        token = deviceTokenString
-    }
+//    func loadRequest(for deviceTokenString : String){
+//
+//        let token = deviceTokenString
+//        print("私のtokenは",token)
+//    }
 
 
     //タイマーで実行される関数
     @objc func sendingss(){
+        
         let encoder = JSONEncoder()
         encoder.outputFormatting = .prettyPrinted
         encoder.dateEncodingStrategy = .iso8601
         let peer = try! encoder.encode(my_peerId)
         let data = try! encoder.encode(token)
+        
         let jsonPeer:String = String(data: peer, encoding: .utf8)!
         let jsonToken:String = String(data: data, encoding: .utf8)!
+        
         socket.emit("Token", jsonPeer,jsonToken)
         print("タイマー実行中")
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        let appDelegate = UIApplication.shared.delegate as! AppDelegate
-            appDelegate.viewController = self
+//        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+//            appDelegate.viewController = self
         //タイマー
         var timer = Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(sendingss), userInfo: nil, repeats: false)
         
@@ -177,7 +180,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
         }
 
         let builder = MCOMessageBuilder()
-        builder.header.to = [MCOAddress(displayName: "西口さんへテスト", mailbox: "menkai.info@gmail.com")]
+        builder.header.to = [MCOAddress(displayName: "西口さんへテスト", mailbox: "shota.merry.go.round@gmail.com")]
         // 送信先の表示名とアドレス
         builder.header.from = MCOAddress(displayName: "山田太郎2さんから", mailbox: gmailaddress)   // 送信元の表示名とアドレス
         builder.header.subject = "Genchi Connect Me!"
@@ -411,52 +414,64 @@ extension ViewController{
                 print("代入後の値はこれ",self.peeridValue)
                 
                 //OneSignalのデバイスTokenにpeerIdをタグ付け
-                OneSignal.sendTag("PeerID", value: peerId)
-                print("Tagを付与しました")
+//                OneSignal.sendTag("PeerID", value: peerId)
+//                print("Tagを付与しました")
+                
             }
         }
 
         // MARK: PEER_EVENT_CALL
-        peer.on(SKWPeerEventEnum.PEER_EVENT_CALL) { obj in
-            if let connection = obj as? SKWMediaConnection{
-                self.setupMediaConnectionCallbacks(mediaConnection: connection)
-                self.mediaConnection = connection
-                connection.answer(self.localStream)
+            peer.on(SKWPeerEventEnum.PEER_EVENT_CALL) { obj in
+                if self.AnswerCall == true {
+                    if let connection = obj as? SKWMediaConnection{
+                        self.setupMediaConnectionCallbacks(mediaConnection: connection)
+                        self.mediaConnection = connection
+                        connection.answer(self.localStream)
+                        
+                        self.AnswerCall = false
+                    }
+                } else {
+                    print("通話中です",self.AnswerCall)
+                }
+                
             }
-        }
 
         // MARK: PEER_EVENT_CONNECTION
-        peer.on(SKWPeerEventEnum.PEER_EVENT_CONNECTION) { obj in
-            if let connection = obj as? SKWDataConnection{
-                if self.dataConnection == nil {
-                    //call画面を出す
-                    self.callCenter.IncomingCall(true)
-                }
-                self.dataConnection = connection
-                self.setupDataConnectionCallbacks(dataConnection: connection)
+            peer.on(SKWPeerEventEnum.PEER_EVENT_CONNECTION) { obj in
+                //voipできたらコメントアウト外す
+                //if self.AnswerCall == true {
+                    if let connection = obj as? SKWDataConnection{
+                        if self.dataConnection == nil {
+                            //call画面を出す
+                            self.callCenter.IncomingCall(true)
+                        }
+                        self.dataConnection = connection
+                        self.setupDataConnectionCallbacks(dataConnection: connection)
+                        
+                        self.AnswerCall = false
+                    }
+//                } else {
+//                    print("通話中です",self.AnswerCall)
+//                }
             }
-        }
+        
     }
 
     func setupMediaConnectionCallbacks(mediaConnection:SKWMediaConnection){
 
-        if AnswerCall == 1 {
+        
         // MARK: MEDIACONNECTION_EVENT_STREAM
-        mediaConnection.on(SKWMediaConnectionEventEnum.MEDIACONNECTION_EVENT_STREAM) { obj in
-            if let msStream = obj as? SKWMediaStream{
-                self.remoteStream = msStream
-                DispatchQueue.main.async {
-                    self.remoteStream?.addVideoRenderer(self.remoteStreamView, track: 0)
+            mediaConnection.on(SKWMediaConnectionEventEnum.MEDIACONNECTION_EVENT_STREAM) { obj in
+                if let msStream = obj as? SKWMediaStream{
+                    self.remoteStream = msStream
+                    DispatchQueue.main.async {
+                        self.remoteStream?.addVideoRenderer(self.remoteStreamView, track: 0)
+                    }
+                    self.changeConnectionStatusUI(connected: true)
+                    self.callCenter.Connected()
+                    
                 }
-                self.changeConnectionStatusUI(connected: true)
-                self.callCenter.Connected()
-                self.flag = 1
-                print("flagは",self.flag)
             }
-        }
-        }else{
-            print("着信を拒否しています")
-        }
 
         // MARK: MEDIACONNECTION_EVENT_CLOSE
         mediaConnection.on(SKWMediaConnectionEventEnum.MEDIACONNECTION_EVENT_CLOSE) { obj in
@@ -469,10 +484,11 @@ extension ViewController{
                 }
                 self.changeConnectionStatusUI(connected: false)
                 self.callCenter.EndCall()
-                self.flag = 0
-                print("flagは",self.flag)
-                self.AnswerCall = 0
-                print("AnswerCall",self.AnswerCall)
+                
+                //ブラウザ側が切った時
+                //callkitで切った時
+                self.AnswerCall = true
+                print("trueになりました",self.AnswerCall)
             }
         }
     }
@@ -481,6 +497,7 @@ extension ViewController{
         // MARK: DATACONNECTION_EVENT_OPEN
         dataConnection.on(SKWDataConnectionEventEnum.DATACONNECTION_EVENT_OPEN) { obj in
             self.changeConnectionStatusUI(connected: true)
+            
         }
 
         // MARK: DATACONNECTION_EVENT_CLOSE
@@ -489,6 +506,7 @@ extension ViewController{
             self.dataConnection = nil
             self.changeConnectionStatusUI(connected: false)
             self.callCenter.EndCall()
+            
         }
     }
 }
@@ -508,23 +526,25 @@ extension ViewController: CXProviderDelegate {
 
     //Callkitで応答を選択した時の動作
     func provider(_ provider: CXProvider, perform action: CXAnswerCallAction) {
-        self.AnswerCall = 1
-        print("AnswerCall",AnswerCall)
         
         callCenter.ConfigureAudioSession()
         if let peer = self.dataConnection?.peer {
             self.call(targetPeerId: peer)
         }
         action.fulfill()
+        
     }
 
     func provider(_ provider: CXProvider, perform action: CXEndCallAction) {
-        self.AnswerCall = 0
-        print("AnswerCall",AnswerCall)
         
         self.dataConnection?.close()
         self.mediaConnection?.close()
         action.fulfill()
+        
+        //callkitで切った時
+        //ブラウザ側が切った時
+        self.AnswerCall = true
+        print("trueになりました",self.AnswerCall)
     }
 }
 

@@ -12,6 +12,7 @@ import UIKit
 var uservalue:Array<String> = []
 
 class signUpViewController: UIViewController, UITextFieldDelegate {
+    
 
     @IBOutlet weak var adress: UITextField!
     @IBOutlet weak var pass: UITextField!
