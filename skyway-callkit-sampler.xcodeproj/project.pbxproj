@@ -7,12 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-/*新*/
 		3874CDFA25F8EFDE00F4062A /* signUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3874CDF925F8EFDE00F4062A /* signUpViewController.swift */; };
-/*旧*/
-
 		431F061625F8B0560053819C /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431F061525F8B0560053819C /* SceneDelegate.swift */; };
-
 		CA37911A8028E0A6AF6AF88B /* Pods_skyway_callkit_sampler.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D419F27A853891715B97711 /* Pods_skyway_callkit_sampler.framework */; };
 		E325902823005D1000A51155 /* CallCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = E325902723005D1000A51155 /* CallCenter.swift */; };
 		E3BFA19722F9B9FA00EBE78D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3BFA19622F9B9FA00EBE78D /* AppDelegate.swift */; };
@@ -43,10 +39,8 @@
 
 /* Begin PBXFileReference section */
 		270D947900FF34ABD6AC3A8E /* Pods-skyway-callkit-sampler.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-skyway-callkit-sampler.release.xcconfig"; path = "Target Support Files/Pods-skyway-callkit-sampler/Pods-skyway-callkit-sampler.release.xcconfig"; sourceTree = "<group>"; };
-/*新*/
 		3874CDF925F8EFDE00F4062A /* signUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = signUpViewController.swift; sourceTree = "<group>"; };
 		3874CE0C25F8F88F00F4062A /* skyway_callkit_sampler-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "skyway_callkit_sampler-Bridging-Header.h"; sourceTree = "<group>"; };
-/*旧*/
 		431F061525F8B0560053819C /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		4351029325BD355300556F0E /* skyway-callkit-sampler.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "skyway-callkit-sampler.entitlements"; sourceTree = "<group>"; };
 		9D419F27A853891715B97711 /* Pods_skyway_callkit_sampler.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_skyway_callkit_sampler.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -533,6 +527,7 @@
 				CODE_SIGN_ENTITLEMENTS = "skyway-callkit-sampler/skyway-callkit-sampler.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 10;
 				DEVELOPMENT_TEAM = MCS8A565ZC;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -546,7 +541,8 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.skyway.pushkit;
+				MARKETING_VERSION = 1.7;
+				PRODUCT_BUNDLE_IDENTIFIER = com.skyway.pushkit.3;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/$(PROJECT)/$(SWIFT_MODULE_NAME)-Bridging-Header.h";
@@ -563,6 +559,7 @@
 				CODE_SIGN_ENTITLEMENTS = "skyway-callkit-sampler/skyway-callkit-sampler.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 10;
 				DEVELOPMENT_TEAM = MCS8A565ZC;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -576,7 +573,8 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.skyway.pushkit;
+				MARKETING_VERSION = 1.7;
+				PRODUCT_BUNDLE_IDENTIFIER = com.skyway.pushkit.3;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/$(PROJECT)/$(SWIFT_MODULE_NAME)-Bridging-Header.h";
