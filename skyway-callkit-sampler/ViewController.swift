@@ -180,7 +180,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
         }
 
         let builder = MCOMessageBuilder()
-        builder.header.to = [MCOAddress(displayName: "西口さんへテスト", mailbox: "shota.merry.go.round@gmail.com")]
+        builder.header.to = [MCOAddress(displayName: "西口さんへテスト", mailbox: "menkai.info@gmail.com")]
         // 送信先の表示名とアドレス
         builder.header.from = MCOAddress(displayName: "山田太郎2さんから", mailbox: gmailaddress)   // 送信元の表示名とアドレス
         builder.header.subject = "Genchi Connect Me!"
