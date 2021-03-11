@@ -527,7 +527,7 @@
 				CODE_SIGN_ENTITLEMENTS = "skyway-callkit-sampler/skyway-callkit-sampler.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 10;
+				CURRENT_PROJECT_VERSION = 11;
 				DEVELOPMENT_TEAM = MCS8A565ZC;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -541,8 +541,8 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.7;
-				PRODUCT_BUNDLE_IDENTIFIER = com.skyway.pushkit.3;
+				MARKETING_VERSION = 1.8;
+				PRODUCT_BUNDLE_IDENTIFIER = com.skyway.pushkit;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/$(PROJECT)/$(SWIFT_MODULE_NAME)-Bridging-Header.h";
@@ -559,7 +559,7 @@
 				CODE_SIGN_ENTITLEMENTS = "skyway-callkit-sampler/skyway-callkit-sampler.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 10;
+				CURRENT_PROJECT_VERSION = 11;
 				DEVELOPMENT_TEAM = MCS8A565ZC;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -573,8 +573,8 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.7;
-				PRODUCT_BUNDLE_IDENTIFIER = com.skyway.pushkit.3;
+				MARKETING_VERSION = 1.8;
+				PRODUCT_BUNDLE_IDENTIFIER = com.skyway.pushkit;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/$(PROJECT)/$(SWIFT_MODULE_NAME)-Bridging-Header.h";
