@@ -46,7 +46,7 @@ class NotificationService: UNNotificationServiceExtension {
 
 
 class ViewController: UIViewController, UITextFieldDelegate {
-
+    
     fileprivate var peer: SKWPeer?
     fileprivate var dataConnection: SKWDataConnection?
     fileprivate var mediaConnection: SKWMediaConnection?
@@ -69,7 +69,6 @@ class ViewController: UIViewController, UITextFieldDelegate {
     //peerIDを格納
     var my_peerId: String?
     
-    
     //オーディオスイッチ用
 //    var flag: Bool = false
     var changeNo = 0
@@ -79,6 +78,8 @@ class ViewController: UIViewController, UITextFieldDelegate {
     //Callkitで応答したかどうかの確認用
     var AnswerCall = true
     
+    var newPeerCount = 0  // ボタンをタップした回数をカウント
+    var countResetTimer: Timer!  // ボタンタップから次のボタンタップまでの時間を測る
 
     
     let manager = SocketManager(socketURL: URL(string:"https://skyway-voip.herokuapp.com/:3000")!, config: [.log(true), .compress])
@@ -97,7 +98,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
 //    }
 
 
-    //タイマーで実行される関数
+    //タイマーで実行される関数、peerIDとdeviceTokenを送信
     @objc func sendingss(){
         
         let encoder = JSONEncoder()
@@ -113,10 +114,76 @@ class ViewController: UIViewController, UITextFieldDelegate {
         print("タイマー実行中")
     }
     
+    //peerID更新時にpeerIDとdeviceTokenを送信
+    func sending(){
+        
+        let encoder = JSONEncoder()
+        encoder.outputFormatting = .prettyPrinted
+        encoder.dateEncodingStrategy = .iso8601
+        let peer = try! encoder.encode(my_peerId)
+        let data = try! encoder.encode(token)
+        
+        let jsonPeer:String = String(data: peer, encoding: .utf8)!
+        let jsonToken:String = String(data: data, encoding: .utf8)!
+        
+        socket.emit("Token", jsonPeer,jsonToken)
+        print("更新したpeerIDをonesignalへ送信しました")
+    }
+    
+    //通話終了時に新しいpeerIDを生成、セットする
+    func newPeer() {
+        newPeerCount += 1 // 呼ばれるとカウントをあげる
+        if newPeerCount == 1 { // カウントが1のとき実行できる
+            let RandomString = randomString(length: 16) // 16桁のランダムな英数字を生成
+            print("新しいpeerIDは",RandomString)
+            
+            //userDefaultsにpeerIDをセット
+            UserDefaults.standard.set(RandomString, forKey: "peerID")
+            print("userDefaultsに新しいpeerIDをセットしました")
+            print("peerIDを更新しました")
+            
+            self.my_peerId = RandomString
+            print("my_peerIdを更新しました")
+            
+            self.sending()
+            print("更新したpeerIDを送信しました")
+        }else{
+            print("連続したpeerIDの生成を防止しました")
+        }
+        countResetTimer = Timer.scheduledTimer(
+                          timeInterval: 5,
+                          target: self,
+                          selector: #selector(self.countReset),
+                          userInfo: nil,
+                          repeats: true)
+    }
+    
+    @objc func countReset() {
+        newPeerCount = 0
+    }
+    
+    //ランダムな英数字(peerID)を生成
+    func randomString(length: Int) -> String {
+
+        let letters : NSString = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+        let len = UInt32(letters.length)
+
+        var randomString = ""
+
+        for _ in 0 ..< length {
+            let rand = arc4random_uniform(len)
+            var nextChar = letters.character(at: Int(rand))
+            randomString += NSString(characters: &nextChar, length: 1) as String
+        }
+
+        return randomString
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 //        let appDelegate = UIApplication.shared.delegate as! AppDelegate
 //            appDelegate.viewController = self
+        
         //タイマー
         var timer = Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(sendingss), userInfo: nil, repeats: false)
         
@@ -180,7 +247,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
         }
 
         let builder = MCOMessageBuilder()
-        builder.header.to = [MCOAddress(displayName: "西口さんへテスト", mailbox: "menkai.info@gmail.com")]
+        builder.header.to = [MCOAddress(displayName: "西口さんへテスト", mailbox: "shota.merry.go.round@gmail.com")]
         // 送信先の表示名とアドレス
         builder.header.from = MCOAddress(displayName: "山田太郎2さんから", mailbox: gmailaddress)   // 送信元の表示名とアドレス
         builder.header.subject = "Genchi Connect Me!"
@@ -221,7 +288,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
 
         }
         localStream?.setCameraPosition(pos)
-        print("全てわりました2")
+        print("全て変わりました2")
     }
 
     @IBAction func tapCall(){
@@ -312,9 +379,21 @@ extension ViewController {
         let option: SKWPeerOption = SKWPeerOption.init();
         option.key = AppDelegate.shared.skywayAPIKey
         option.domain = AppDelegate.shared.skywayDomain
-
-        //peer = SKWPeer(id: "maid-shokan", options: option)
-        peer = SKWPeer(options: option)
+        
+        //userDefaultからpeerIDを読み込み
+        let peerid = UserDefaults.standard.string(forKey: "peerID") ?? nil
+        print("userDefaultsからpeerIDを読み込みました",peerid ?? "セットされていません")
+        
+        if peerid == nil {
+            //ランダムなpeerIDを設定
+            peer = SKWPeer(options: option)
+            print("ランダムなpeerIDをセットしました")
+        }else{
+            //userDefaultsのpeerIDを設定
+            peer = SKWPeer(id: peerid, options: option)
+            print("前回更新されたpeerIDをセットしました")
+        }
+        
         
         if let _peer = peer {
             self.setupPeerCallBacks(peer: _peer)
@@ -412,11 +491,14 @@ extension ViewController{
                 print("あなたのpeerIdは: \(self.my_peerId!)")
                 self.peeridValue.insert(peerId, at: 0)
                 print("代入後の値はこれ",self.peeridValue)
+
+                //userDefaultsにpeerIDをセット
+                UserDefaults.standard.set(peerId, forKey: "peerID")
+                print("userDefaultsにpeerIDをセットしました")
                 
                 //OneSignalのデバイスTokenにpeerIdをタグ付け
 //                OneSignal.sendTag("PeerID", value: peerId)
 //                print("Tagを付与しました")
-                
             }
         }
 
@@ -438,8 +520,6 @@ extension ViewController{
 
         // MARK: PEER_EVENT_CONNECTION
             peer.on(SKWPeerEventEnum.PEER_EVENT_CONNECTION) { obj in
-                //voipできたらコメントアウト外す
-                //if self.AnswerCall == true {
                     if let connection = obj as? SKWDataConnection{
                         if self.dataConnection == nil {
                             //call画面を出す
@@ -450,11 +530,7 @@ extension ViewController{
                         
                         self.AnswerCall = false
                     }
-//                } else {
-//                    print("通話中です",self.AnswerCall)
-//                }
             }
-        
     }
 
     func setupMediaConnectionCallbacks(mediaConnection:SKWMediaConnection){
@@ -489,8 +565,11 @@ extension ViewController{
                 //callkitで切った時
                 self.AnswerCall = true
                 print("trueになりました",self.AnswerCall)
+                
+                self.newPeer()
             }
         }
+        
     }
 
     func setupDataConnectionCallbacks(dataConnection:SKWDataConnection){

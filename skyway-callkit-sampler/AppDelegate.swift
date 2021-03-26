@@ -41,7 +41,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         OneSignal.setLogLevel(.LL_VERBOSE, visualLevel: .LL_NONE)
         OneSignal.initWithLaunchOptions(launchOptions)
-        OneSignal.setAppId("253ebb23-922e-4e29-b0af-0a0f8796dfeb")
+        OneSignal.setAppId("1308fc8f-2338-4f2e-92ec-a52bde4dbf1c")
         OneSignal.promptForPushNotifications(userResponse: { accepted in
               print("User accepted notifications: \(accepted)")
            })
@@ -65,7 +65,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         return true
     }
-    
     
     func applicationWillResignActive(_ application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
