@@ -12,17 +12,20 @@ import PushKit
 import UserNotifications
 import SkyWay
 import OneSignal
+import SocketIO
+
+var deviceStatus: String?
+var deviceToken: String?
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
-    
     
     var window: UIWindow?
     let skywayAPIKey = "bc3292a3-35bd-4289-ac50-359c8100377c"
     let skywayDomain = "p2p-video-chat.app"
 
-    //let manager = SocketManager(socketURL: URL(string:"http://localhost:3000")!, config: [.log(true), .compress])
-        //var socket : SocketIOClient!
+    let manager = SocketManager(socketURL: URL(string:"https://skyway-voip.herokuapp.com/:3000")!, config: [.log(true), .compress])
+    var socket : SocketIOClient!
 
     //Callkit
     let callCenter = CallCenter(supportsVideo: true)
@@ -46,7 +49,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
               print("User accepted notifications: \(accepted)")
            })
         
-        
+        socket = manager.defaultSocket
+
+                socket.on(clientEvent: .connect){ data, ack in
+                    print("socket connected!")
+                }
+
+                socket.on(clientEvent: .disconnect){data, ack in
+                    print("socket disconnected!")
+                }
+
+                socket.connect()
         
         let center = UNUserNotificationCenter.current()
         center.requestAuthorization(options: [.alert, .badge, .sound]) {granted, error in
@@ -88,6 +101,25 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+        
+        if deviceStatus == "background"{
+            deviceStatus = "RESET"
+            print("deviceStatusをRESETにしました2")
+        } else {
+            print("アプリ終了")
+            let encoder = JSONEncoder()
+            encoder.outputFormatting = .prettyPrinted
+            encoder.dateEncodingStrategy = .iso8601
+            let data = try! encoder.encode(deviceToken)
+
+            let jsonToken:String = String(data: data, encoding: .utf8)!
+
+            socket.emit("Terminate", "",jsonToken)
+            print("アプリが終了したことをonesignalへ送信しました")
+            
+            UserDefaults.standard.removeObject(forKey: "peerID")
+            print("userDefaultを削除しました")
+        }
     }
 
 
@@ -108,6 +140,7 @@ extension AppDelegate: PKPushRegistryDelegate {
         let pkid = pushCredentials.token.map { String(format: "%02.2hhx", $0) }.joined()
                print("deviceTokenは: \(pkid)")
         token = pkid
+        deviceToken = pkid
         
     }
 

@@ -25,9 +25,15 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
 
     func sceneWillEnterForeground(_ scene: UIScene) {
+        print("アプリがバックグラウンドから復帰しました")
+        deviceStatus = "RESET"
+        print("deviceStatusをRESETにしました")
     }
 
     func sceneDidEnterBackground(_ scene: UIScene) {
+        print("アプリがバックグラウンドに入りました")
+        deviceStatus = "background"
+        print("deviceStatusをbackgroundにしました")
     }
 
 

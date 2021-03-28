@@ -78,8 +78,8 @@ class ViewController: UIViewController, UITextFieldDelegate {
     //Callkitで応答したかどうかの確認用
     var AnswerCall = true
     
-    var newPeerCount = 0  // ボタンをタップした回数をカウント
-    var countResetTimer: Timer!  // ボタンタップから次のボタンタップまでの時間を測る
+//    var newPeerCount = 0  // 実行した回数をカウント
+//    var countResetTimer: Timer!  // 実行から実行までの時間を測る
 
     
     let manager = SocketManager(socketURL: URL(string:"https://skyway-voip.herokuapp.com/:3000")!, config: [.log(true), .compress])
@@ -96,7 +96,6 @@ class ViewController: UIViewController, UITextFieldDelegate {
 //        let token = deviceTokenString
 //        print("私のtokenは",token)
 //    }
-
 
     //タイマーで実行される関数、peerIDとdeviceTokenを送信
     @objc func sendingss(){
@@ -115,69 +114,71 @@ class ViewController: UIViewController, UITextFieldDelegate {
     }
     
     //peerID更新時にpeerIDとdeviceTokenを送信
-    func sending(){
-        
-        let encoder = JSONEncoder()
-        encoder.outputFormatting = .prettyPrinted
-        encoder.dateEncodingStrategy = .iso8601
-        let peer = try! encoder.encode(my_peerId)
-        let data = try! encoder.encode(token)
-        
-        let jsonPeer:String = String(data: peer, encoding: .utf8)!
-        let jsonToken:String = String(data: data, encoding: .utf8)!
-        
-        socket.emit("Token", jsonPeer,jsonToken)
-        print("更新したpeerIDをonesignalへ送信しました")
-    }
-    
+//    func sending(){
+//
+//        let encoder = JSONEncoder()
+//        encoder.outputFormatting = .prettyPrinted
+//        encoder.dateEncodingStrategy = .iso8601
+//        let peer = try! encoder.encode(my_peerId)
+//        let data = try! encoder.encode(token)
+//
+//        let jsonPeer:String = String(data: peer, encoding: .utf8)!
+//        let jsonToken:String = String(data: data, encoding: .utf8)!
+//
+//        socket.emit("Token", jsonPeer,jsonToken)
+//        print("更新したpeerIDをonesignalへ送信しました")
+//    }
+//
     //通話終了時に新しいpeerIDを生成、セットする
-    func newPeer() {
-        newPeerCount += 1 // 呼ばれるとカウントをあげる
-        if newPeerCount == 1 { // カウントが1のとき実行できる
-            let RandomString = randomString(length: 16) // 16桁のランダムな英数字を生成
-            print("新しいpeerIDは",RandomString)
-            
-            //userDefaultsにpeerIDをセット
-            UserDefaults.standard.set(RandomString, forKey: "peerID")
-            print("userDefaultsに新しいpeerIDをセットしました")
-            print("peerIDを更新しました")
-            
-            self.my_peerId = RandomString
-            print("my_peerIdを更新しました")
-            
-            self.sending()
-            print("更新したpeerIDを送信しました")
-        }else{
-            print("連続したpeerIDの生成を防止しました")
-        }
-        countResetTimer = Timer.scheduledTimer(
-                          timeInterval: 5,
-                          target: self,
-                          selector: #selector(self.countReset),
-                          userInfo: nil,
-                          repeats: true)
-    }
-    
-    @objc func countReset() {
-        newPeerCount = 0
-    }
-    
-    //ランダムな英数字(peerID)を生成
-    func randomString(length: Int) -> String {
-
-        let letters : NSString = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
-        let len = UInt32(letters.length)
-
-        var randomString = ""
-
-        for _ in 0 ..< length {
-            let rand = arc4random_uniform(len)
-            var nextChar = letters.character(at: Int(rand))
-            randomString += NSString(characters: &nextChar, length: 1) as String
-        }
-
-        return randomString
-    }
+//    func newPeer() {
+//        newPeerCount += 1 // 呼ばれるとカウントをあげる
+//        if newPeerCount == 1 { // カウントが1のとき実行できる
+//            let RandomString = randomString(length: 16) // 16桁のランダムな英数字を生成
+//            print("新しいpeerIDは",RandomString)
+//
+//            //userDefaultsにpeerIDをセット
+//            UserDefaults.standard.set(RandomString, forKey: "peerID")
+//            print("userDefaultsに新しいpeerIDをセットしました")
+//            print("peerIDを更新しました")
+//
+//            self.my_peerId = RandomString
+//            print("my_peerIdを更新しました")
+//
+//            self.sending()
+//            print("更新したpeerIDを送信しました")
+//
+//            self.setup()
+//        }else{
+//            print("連続したpeerIDの生成を防止しました")
+//        }
+//        countResetTimer = Timer.scheduledTimer(
+//                          timeInterval: 5,
+//                          target: self,
+//                          selector: #selector(self.countReset),
+//                          userInfo: nil,
+//                          repeats: true)
+//    }
+//
+//    @objc func countReset() {
+//        newPeerCount = 0
+//    }
+//
+//    //ランダムな英数字(peerID)を生成
+//    func randomString(length: Int) -> String {
+//
+//        let letters : NSString = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+//        let len = UInt32(letters.length)
+//
+//        var randomString = ""
+//
+//        for _ in 0 ..< length {
+//            let rand = arc4random_uniform(len)
+//            var nextChar = letters.character(at: Int(rand))
+//            randomString += NSString(characters: &nextChar, length: 1) as String
+//        }
+//
+//        return randomString
+//    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -566,7 +567,7 @@ extension ViewController{
                 self.AnswerCall = true
                 print("trueになりました",self.AnswerCall)
                 
-                self.newPeer()
+                //self.newPeer()
             }
         }
         
