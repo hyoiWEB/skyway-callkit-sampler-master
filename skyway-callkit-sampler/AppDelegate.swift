@@ -40,6 +40,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         
+        let userDefaults = UserDefaults.standard
+        let firstLunchKey = "firstLunchKey"
+        let firstlunch = [firstLunchKey:true]
+        userDefaults.register(defaults: firstlunch)
+        
         setupPushKit()
         
         OneSignal.setLogLevel(.LL_VERBOSE, visualLevel: .LL_NONE)

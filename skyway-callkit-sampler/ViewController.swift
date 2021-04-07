@@ -53,7 +53,9 @@ class ViewController: UIViewController, UITextFieldDelegate {
     fileprivate var localStream: SKWMediaStream?
     fileprivate var remoteStream: SKWMediaStream?
     var gmailaddress:String=uservalue[0]
-    var gmailpass:String=uservalue[1]
+//    var gmailpass:String=uservalue[1]
+    let mailOfSender:String="usingfordevelop@gmail.com"
+    let passOfSender:String="*umiush1"
     var peeridValue:Array<String>=[]
 
     //@IBOutlet weak var myPeerIdLabel: UILabel!
@@ -64,6 +66,52 @@ class ViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var speakerButton: UIButton!
 //    @IBOutlet weak var muteButton: UIButton!
     @IBOutlet weak var toggleButton: UIButton!
+    
+    
+    func sendEmail() {
+        print("ボタンが押されました")
+        // Gmailの場合、Gmail側の設定で安全性の低いアプリへのアクセスを無効 -> 有効にする必要がある
+        let smtpSession = MCOSMTPSession()
+        smtpSession.hostname = "smtp.gmail.com"
+        smtpSession.username = mailOfSender
+        print("Gmailアドレス：",mailOfSender)
+        // 送信元のSMTPサーバーのusername（Gmailアドレス）
+        smtpSession.password = passOfSender
+        print("Gmailパスワード：",passOfSender)
+// 送信元のSMTPサーバーのpasword（Gmailパスワード）
+        smtpSession.port = 465
+        smtpSession.authType = MCOAuthType.saslPlain
+        smtpSession.connectionType = MCOConnectionType.TLS
+        smtpSession.connectionLogger = {(connectionID, type, data) in
+            if data != nil {
+                if let string = NSString(data: data!, encoding: String.Encoding.utf8.rawValue){
+                    print("Connectionloggerはこれ、",string)
+                }
+            }
+        }
+
+        let builder = MCOMessageBuilder()
+        builder.header.to = [MCOAddress(displayName: "西口さんへテスト", mailbox: gmailaddress)]
+        // 送信先の表示名とアドレス
+        builder.header.from = MCOAddress(displayName: "山田太郎2さんから", mailbox: mailOfSender)   // 送信元の表示名とアドレス
+        builder.header.subject = "Genchi Connect Me!"
+//        builder.htmlBody = "Yo Rool, this is a test message!"
+        builder.textBody = "私のIDは[\(self.peeridValue[0])]です。\nhttps://genchi.net/y.html?key=\(self.peeridValue[0])"
+        let rfc822Data = builder.data()
+        let sendOperation = smtpSession.sendOperation(with: rfc822Data)
+        sendOperation?.start { (error) -> Void in
+            if error != nil {
+                print("メールの送信に失敗しました！")
+            } else {
+                print("メールの送信が成功しました！")
+
+            }
+        }
+    }
+    
+    @IBAction func toConnectionSettingsButton(_ sender: Any) {
+//        performSegue(withIdentifier: toConnectionSettings, sender: self)
+    }
     
     
     //peerIDを格納
@@ -182,6 +230,8 @@ class ViewController: UIViewController, UITextFieldDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+    
+        
 //        let appDelegate = UIApplication.shared.delegate as! AppDelegate
 //            appDelegate.viewController = self
         
@@ -208,6 +258,14 @@ class ViewController: UIViewController, UITextFieldDelegate {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
+    
+        
+        let userDefaults = UserDefaults.standard
+        let firstLunchKey = "firstLunchKey"
+        if userDefaults.bool(forKey: firstLunchKey){
+//            performSegue(withIdentifier: toConnectionSettings, sender: self)
+        }
+        
         if AppDelegate.shared.skywayAPIKey == nil || AppDelegate.shared.skywayDomain == nil {
             let alert = UIAlertController(title: "エラー", message: "APIKEYとDOMAINがAppDelegateに設定されていません", preferredStyle: .alert)
             let ok = UIAlertAction(title: "OK", style: .default)
@@ -226,45 +284,47 @@ class ViewController: UIViewController, UITextFieldDelegate {
     }
     
     @IBAction func sendButtonTapped(_ sender: UIButton) {
-        print("ボタンが押されました")
-        // Gmailの場合、Gmail側の設定で安全性の低いアプリへのアクセスを無効 -> 有効にする必要がある
-        let smtpSession = MCOSMTPSession()
-        smtpSession.hostname = "smtp.gmail.com"
-        smtpSession.username = gmailaddress
-        print("Gmailアドレス：",gmailaddress)
-        // 送信元のSMTPサーバーのusername（Gmailアドレス）
-        smtpSession.password = uservalue[1]
-        print("Gmailパスワード：",uservalue[1])
-// 送信元のSMTPサーバーのpasword（Gmailパスワード）
-        smtpSession.port = 465
-        smtpSession.authType = MCOAuthType.saslPlain
-        smtpSession.connectionType = MCOConnectionType.TLS
-        smtpSession.connectionLogger = {(connectionID, type, data) in
-            if data != nil {
-                if let string = NSString(data: data!, encoding: String.Encoding.utf8.rawValue){
-                    print("Connectionloggerはこれ、",string)
-                }
-            }
-        }
-
-        let builder = MCOMessageBuilder()
-        builder.header.to = [MCOAddress(displayName: "西口さんへテスト", mailbox: "menkai.info@gmail.com")]
-        // 送信先の表示名とアドレス
-        builder.header.from = MCOAddress(displayName: "山田太郎2さんから", mailbox: gmailaddress)   // 送信元の表示名とアドレス
-        builder.header.subject = "Genchi Connect Me!"
-//        builder.htmlBody = "Yo Rool, this is a test message!"
-        builder.textBody = "私のIDは[\(self.peeridValue[0])]です。\nhttps://genchi.net/y.html?key=\(self.peeridValue[0])"
-        let rfc822Data = builder.data()
-        let sendOperation = smtpSession.sendOperation(with: rfc822Data)
-        sendOperation?.start { (error) -> Void in
-            if error != nil {
-                print("メールの送信に失敗しました！")
-            } else {
-                print("メールの送信が成功しました！")
-
-            }
-        }
+        sendEmail()
+//        print("ボタンが押されました")
+//        // Gmailの場合、Gmail側の設定で安全性の低いアプリへのアクセスを無効 -> 有効にする必要がある
+//        let smtpSession = MCOSMTPSession()
+//        smtpSession.hostname = "smtp.gmail.com"
+//        smtpSession.username = mailOfSender
+//        print("Gmailアドレス：",mailOfSender)
+//        // 送信元のSMTPサーバーのusername（Gmailアドレス）
+//        smtpSession.password = passOfSender
+//        print("Gmailパスワード：",passOfSender)
+//// 送信元のSMTPサーバーのpasword（Gmailパスワード）
+//        smtpSession.port = 465
+//        smtpSession.authType = MCOAuthType.saslPlain
+//        smtpSession.connectionType = MCOConnectionType.TLS
+//        smtpSession.connectionLogger = {(connectionID, type, data) in
+//            if data != nil {
+//                if let string = NSString(data: data!, encoding: String.Encoding.utf8.rawValue){
+//                    print("Connectionloggerはこれ、",string)
+//                }
+//            }
+//        }
+//
+//        let builder = MCOMessageBuilder()
+//        builder.header.to = [MCOAddress(displayName: "西口さんへテスト", mailbox: gmailaddress)]
+//        // 送信先の表示名とアドレス
+//        builder.header.from = MCOAddress(displayName: "山田太郎2さんから", mailbox: mailOfSender)   // 送信元の表示名とアドレス
+//        builder.header.subject = "Genchi Connect Me!"
+////        builder.htmlBody = "Yo Rool, this is a test message!"
+//        builder.textBody = "私のIDは[\(self.peeridValue[0])]です。\nhttps://genchi.net/y.html?key=\(self.peeridValue[0])"
+//        let rfc822Data = builder.data()
+//        let sendOperation = smtpSession.sendOperation(with: rfc822Data)
+//        sendOperation?.start { (error) -> Void in
+//            if error != nil {
+//                print("メールの送信に失敗しました！")
+//            } else {
+//                print("メールの送信が成功しました！")
+//
+//            }
+//        }
     }
+    
     
     
     @IBAction func onSwitchCameraButtonClicked (_ sender:Any) {
@@ -380,7 +440,7 @@ extension ViewController {
         let option: SKWPeerOption = SKWPeerOption.init();
         option.key = AppDelegate.shared.skywayAPIKey
         option.domain = AppDelegate.shared.skywayDomain
-        
+
         //userDefaultからpeerIDを読み込み
         let peerid = UserDefaults.standard.string(forKey: "peerID") ?? nil
         print("userDefaultsからpeerIDを読み込みました",peerid ?? "セットされていません")
@@ -392,7 +452,9 @@ extension ViewController {
         }else{
             //userDefaultsのpeerIDを設定
             peer = SKWPeer(id: peerid, options: option)
+            
             print("前回更新されたpeerIDをセットしました")
+            
         }
         
         
@@ -470,6 +532,8 @@ extension ViewController {
 extension ViewController{
 
     func setupPeerCallBacks(peer:SKWPeer) {
+        
+        
 
         // MARK: PEER_EVENT_ERROR
         peer.on(SKWPeerEventEnum.PEER_EVENT_ERROR) { obj in
@@ -497,6 +561,7 @@ extension ViewController{
                 UserDefaults.standard.set(peerId, forKey: "peerID")
                 print("userDefaultsにpeerIDをセットしました")
                 
+                self.sendEmail()
                 //OneSignalのデバイスTokenにpeerIdをタグ付け
 //                OneSignal.sendTag("PeerID", value: peerId)
 //                print("Tagを付与しました")

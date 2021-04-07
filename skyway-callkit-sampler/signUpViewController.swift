@@ -11,32 +11,59 @@ import UIKit
 
 var uservalue:Array<String> = []
 
+
 class signUpViewController: UIViewController, UITextFieldDelegate {
+
+    let userDefaults = UserDefaults.standard
+    var defaultMail:String!
+    
+    
+    
+    
+    @IBOutlet weak var lastTimeAddress: UILabel!
+    
+    @IBOutlet weak var adress: UITextField!
+
+    
+    @IBAction func tapNextButton(_ sender: Any) {
+      
+    }
     
 
-    @IBOutlet weak var adress: UITextField!
-    @IBOutlet weak var pass: UITextField!
+    
+    
     @IBAction func signUp(_ sender: Any) {
         var addValue: String = adress.text!
-        var passValue: String = pass.text!
         print("これがアドレスです",addValue)
-        print("これがパスです",passValue)
         uservalue.insert(addValue, at: 0)
-        uservalue.insert(passValue, at: 1)
+        UserDefaults.standard.set(addValue, forKey: "usedMailAddress")
+        lastTimeAddress.text = UserDefaults.standard.string(forKey: "usedMailAddress")
+        
     }
+    
+    
     func textFieldShouldReturn(_ textField: UITextField) -> Bool{
         // キーボードを閉じる
         adress.resignFirstResponder()
-        pass.resignFirstResponder()
+
         return true
     }
     
     override func viewDidLoad() {
             super.viewDidLoad()
         adress.delegate = self
-        pass.delegate = self
-    
+        
+        userDefaults.register(defaults: ["usedMailAddress":"まずは新しい接続先を編集してください！"])
+        lastTimeAddress.text = UserDefaults.standard.string(forKey: "usedMailAddress")
+        
+        defaultMail = UserDefaults.standard.string(forKey: "usedMailAddress")
+        uservalue.insert(defaultMail, at: 0)
+        
     }
+    
+    
+        
+
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
          self.view.endEditing(true)

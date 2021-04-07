@@ -18,17 +18,6 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="n0S-JM-mTC">
-                                <rect key="frame" x="157" y="812" width="100" height="50"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="100" id="ZtU-Cw-Irm"/>
-                                    <constraint firstAttribute="height" constant="50" id="xPS-P7-mic"/>
-                                </constraints>
-                                <state key="normal" title="end Call"/>
-                                <connections>
-                                    <action selector="tapEndCall" destination="BYZ-38-t0r" eventType="touchUpInside" id="KHW-rQ-4k4"/>
-                                </connections>
-                            </button>
                             <view contentMode="scaleToFill" id="eFh-Yn-dlF" userLabel="remoteView" customClass="SKWVideo">
                                 <rect key="frame" x="0.0" y="44" width="414" height="760"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
@@ -98,11 +87,33 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="k2K-2o-pbI">
-                                <rect key="frame" x="51" y="812" width="77" height="30"/>
-                                <state key="normal" title="send Gmail"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Kph-m1-NaQ">
+                                <rect key="frame" x="20" y="812" width="100" height="50"/>
+                                <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="a4K-ls-qrP"/>
+                                    <constraint firstAttribute="width" constant="100" id="hlT-xr-xkC"/>
+                                </constraints>
+                                <state key="normal" title="接続先設定">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
                                 <connections>
-                                    <action selector="sendButtonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="eja-H2-s2p"/>
+                                    <action selector="toConnectionSettingsButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="TWp-QK-fwH"/>
+                                    <segue destination="4RB-bo-Owk" kind="presentation" id="Ov4-k7-ovI"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="n0S-JM-mTC">
+                                <rect key="frame" x="294" y="812" width="100" height="50"/>
+                                <color key="backgroundColor" systemColor="systemRedColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="6U5-6w-mDM"/>
+                                    <constraint firstAttribute="width" constant="100" id="8Vy-2M-2IL"/>
+                                </constraints>
+                                <state key="normal" title="end Call">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
+                                <connections>
+                                    <action selector="tapEndCall" destination="BYZ-38-t0r" eventType="touchUpInside" id="KHW-rQ-4k4"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -110,14 +121,14 @@
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="eFh-Yn-dlF" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="5j9-9f-ctp"/>
-                            <constraint firstItem="n0S-JM-mTC" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="centerX" constant="-50" id="7nT-Hc-PUm"/>
                             <constraint firstItem="eFh-Yn-dlF" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="ANp-uK-ITa"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="n0S-JM-mTC" secondAttribute="trailing" constant="20" id="AnW-TK-b9T"/>
                             <constraint firstItem="IJa-nR-C4E" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="10" id="B3x-0i-V9d"/>
+                            <constraint firstItem="n0S-JM-mTC" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="N58-Rg-e18"/>
+                            <constraint firstItem="Kph-m1-NaQ" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="WKA-GP-Zlf"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="eFh-Yn-dlF" secondAttribute="trailing" id="Y1r-nJ-PPz"/>
-                            <constraint firstItem="n0S-JM-mTC" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="bd8-vA-uq2"/>
-                            <constraint firstItem="k2K-2o-pbI" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="51" id="g6s-yB-uio"/>
                             <constraint firstItem="IJa-nR-C4E" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="gQ7-Zi-CyP"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="k2K-2o-pbI" secondAttribute="bottom" constant="20" id="qGW-40-TtY"/>
+                            <constraint firstItem="Kph-m1-NaQ" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="hOl-TI-QY8"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="zuj-UQ-t0G"/>
@@ -131,70 +142,84 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="195.6521739130435" y="132.58928571428572"/>
+            <point key="canvasLocation" x="223" y="415"/>
         </scene>
         <!--Sign Up View Controller-->
         <scene sceneID="YDE-iv-83q">
             <objects>
-                <viewController id="4RB-bo-Owk" customClass="signUpViewController" customModule="skyway_callkit_sampler" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController wantsFullScreenLayout="YES" id="4RB-bo-Owk" customClass="signUpViewController" customModule="skyway_callkit_sampler" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="BNu-2Q-vWH">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="TMm-pc-E87">
-                                <rect key="frame" x="62" y="130" width="250" height="34"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
-                            </textField>
-                            <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="PfB-xC-28k">
-                                <rect key="frame" x="62" y="242" width="250" height="34"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
-                            </textField>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="pass" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zxb-WJ-rxh">
-                                <rect key="frame" x="62" y="213" width="250" height="20"/>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="rom-dF-iWn">
+                                <rect key="frame" x="20" y="186" width="374" height="54"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="なし" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ag0-uP-Ygb">
+                                        <rect key="frame" x="8" y="9" width="358" height="36"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" red="0.098604594749999996" green="0.74115415360000003" blue="0.72960699780000005" alpha="0.16" colorSpace="custom" customColorSpace="sRGB"/>
+                            </view>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SoV-fD-hfu">
+                                <rect key="frame" x="85" y="743" width="246" height="60"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="backgroundColor" systemColor="systemBlueColor"/>
+                                <state key="normal" title="通話画面へ">
+                                    <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="tapNextButton:" destination="4RB-bo-Owk" eventType="touchUpInside" id="h4t-dC-o8R"/>
+                                    <segue destination="BYZ-38-t0r" kind="showDetail" id="Gt9-A1-L5z"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="現在の接続先" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qJr-Ob-9TP">
+                                <rect key="frame" x="125" y="145" width="165" height="33"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="27"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="通話相手のアドレスを入力..." textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="TMm-pc-E87">
+                                <rect key="frame" x="23" y="352" width="270" height="34"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7rW-3z-QxK">
-                                <rect key="frame" x="96" y="388" width="216" height="70"/>
+                                <rect key="frame" x="301" y="351" width="90" height="37"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="sign up"/>
+                                <color key="tintColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <state key="normal" title="編集完了"/>
                                 <connections>
                                     <action selector="signUp:" destination="4RB-bo-Owk" eventType="touchUpInside" id="i87-YO-2wI"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Gmail" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AR2-K1-nU3">
-                                <rect key="frame" x="62" y="101" width="250" height="20"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="送信先を追加" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AR2-K1-nU3">
+                                <rect key="frame" x="80" y="304" width="250" height="25"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="21"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SoV-fD-hfu">
-                                <rect key="frame" x="84" y="568" width="246" height="63"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="次へ"/>
-                                <connections>
-                                    <segue destination="BYZ-38-t0r" kind="show" id="ii3-cj-pwn"/>
-                                </connections>
-                            </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="NoV-ol-NfE"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </view>
+                    <navigationItem key="navigationItem" id="myT-4C-IQ7"/>
                     <connections>
                         <outlet property="adress" destination="TMm-pc-E87" id="cbc-zw-lJ8"/>
-                        <outlet property="pass" destination="PfB-xC-28k" id="T36-uj-dgW"/>
+                        <outlet property="lastTimeAddress" destination="Ag0-uP-Ygb" id="aOj-7p-wVY"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xNK-5I-PBO" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-628.125" y="132.04225352112675"/>
+            <point key="canvasLocation" x="1211.5942028985507" y="423.88392857142856"/>
         </scene>
     </scenes>
     <resources>
@@ -202,6 +227,12 @@
         <image name="speaker.wave.2.fill" catalog="system" width="128" height="90"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="systemBlueColor">
+            <color red="0.0" green="0.47843137254901963" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+        <systemColor name="systemRedColor">
+            <color red="1" green="0.23137254901960785" blue="0.18823529411764706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>
