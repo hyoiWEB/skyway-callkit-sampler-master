@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="4RB-bo-Owk">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
     <device id="retina6_5" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
@@ -13,7 +13,7 @@
         <!--View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController modalPresentationStyle="fullScreen" id="BYZ-38-t0r" customClass="ViewController" customModule="skyway_callkit_sampler" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController wantsFullScreenLayout="YES" modalPresentationStyle="fullScreen" id="BYZ-38-t0r" customClass="ViewController" customModule="skyway_callkit_sampler" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -99,7 +99,7 @@
                                 </state>
                                 <connections>
                                     <action selector="toConnectionSettingsButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="TWp-QK-fwH"/>
-                                    <segue destination="4RB-bo-Owk" kind="presentation" id="Ov4-k7-ovI"/>
+                                    <segue destination="4RB-bo-Owk" kind="presentation" identifier="1sttime" id="Ov4-k7-ovI"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="n0S-JM-mTC">
@@ -138,11 +138,12 @@
                         <outlet property="remoteStreamView" destination="eFh-Yn-dlF" id="MB0-1A-5gb"/>
                         <outlet property="speakerButton" destination="Cvl-0e-e4b" id="rNa-DW-sfR"/>
                         <outlet property="toggleButton" destination="Q7P-jJ-iLU" id="beq-Md-Bis"/>
+                        <segue destination="4RB-bo-Owk" kind="presentation" identifier="toSignIn" id="tJg-pf-YpP"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="223" y="415"/>
+            <point key="canvasLocation" x="-17" y="424"/>
         </scene>
         <!--Sign Up View Controller-->
         <scene sceneID="YDE-iv-83q">
@@ -152,57 +153,65 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="rom-dF-iWn">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rom-dF-iWn">
                                 <rect key="frame" x="20" y="186" width="374" height="54"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="なし" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ag0-uP-Ygb">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="なし" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ag0-uP-Ygb">
                                         <rect key="frame" x="8" y="9" width="358" height="36"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                 </subviews>
                                 <color key="backgroundColor" red="0.098604594749999996" green="0.74115415360000003" blue="0.72960699780000005" alpha="0.16" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstItem="Ag0-uP-Ygb" firstAttribute="leading" secondItem="rom-dF-iWn" secondAttribute="leadingMargin" id="8hw-7r-pOC"/>
+                                    <constraint firstItem="Ag0-uP-Ygb" firstAttribute="centerY" secondItem="rom-dF-iWn" secondAttribute="centerY" id="Ag6-0x-vhe"/>
+                                    <constraint firstItem="Ag0-uP-Ygb" firstAttribute="top" secondItem="rom-dF-iWn" secondAttribute="top" constant="9" id="Gom-Vw-U0M"/>
+                                    <constraint firstItem="Ag0-uP-Ygb" firstAttribute="trailing" secondItem="rom-dF-iWn" secondAttribute="trailingMargin" id="b86-Yl-AdW"/>
+                                </constraints>
                             </view>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SoV-fD-hfu">
-                                <rect key="frame" x="85" y="743" width="246" height="60"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SoV-fD-hfu">
+                                <rect key="frame" x="85" y="741" width="246" height="62"/>
                                 <color key="backgroundColor" systemColor="systemBlueColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="62" id="LjT-pc-YKS"/>
+                                </constraints>
                                 <state key="normal" title="通話画面へ">
                                     <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
                                 <connections>
                                     <action selector="tapNextButton:" destination="4RB-bo-Owk" eventType="touchUpInside" id="h4t-dC-o8R"/>
-                                    <segue destination="BYZ-38-t0r" kind="showDetail" id="Gt9-A1-L5z"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="現在の接続先" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qJr-Ob-9TP">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="現在の接続先" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qJr-Ob-9TP">
                                 <rect key="frame" x="125" y="145" width="165" height="33"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="33" id="5hb-Et-b2i"/>
+                                </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="27"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="通話相手のアドレスを入力..." textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="TMm-pc-E87">
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="相手のGmailアドレスを入力..." textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="TMm-pc-E87">
                                 <rect key="frame" x="23" y="352" width="270" height="34"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7rW-3z-QxK">
-                                <rect key="frame" x="301" y="351" width="90" height="37"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7rW-3z-QxK">
+                                <rect key="frame" x="301" y="351" width="90" height="32"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="90" id="nB3-B5-jwW"/>
+                                    <constraint firstAttribute="height" constant="32" id="ple-qq-7aw"/>
+                                </constraints>
                                 <color key="tintColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <state key="normal" title="編集完了"/>
                                 <connections>
                                     <action selector="signUp:" destination="4RB-bo-Owk" eventType="touchUpInside" id="i87-YO-2wI"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="送信先を追加" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AR2-K1-nU3">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="送信先を追加" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AR2-K1-nU3">
                                 <rect key="frame" x="80" y="304" width="250" height="25"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="21"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -210,18 +219,78 @@
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="NoV-ol-NfE"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="rom-dF-iWn" firstAttribute="leading" secondItem="BNu-2Q-vWH" secondAttribute="leadingMargin" id="0TV-MQ-V8d"/>
+                            <constraint firstItem="TMm-pc-E87" firstAttribute="leading" secondItem="NoV-ol-NfE" secondAttribute="leading" constant="23" id="26J-IG-Cg5"/>
+                            <constraint firstItem="7rW-3z-QxK" firstAttribute="leading" secondItem="TMm-pc-E87" secondAttribute="trailing" constant="8" id="2Sy-ly-n2I"/>
+                            <constraint firstItem="rom-dF-iWn" firstAttribute="trailing" secondItem="BNu-2Q-vWH" secondAttribute="trailingMargin" id="5JW-gf-2HI"/>
+                            <constraint firstItem="AR2-K1-nU3" firstAttribute="top" secondItem="rom-dF-iWn" secondAttribute="bottom" constant="64" id="6uQ-gC-uXY"/>
+                            <constraint firstItem="rom-dF-iWn" firstAttribute="top" secondItem="qJr-Ob-9TP" secondAttribute="bottom" constant="8" id="9pl-za-2tq"/>
+                            <constraint firstItem="qJr-Ob-9TP" firstAttribute="top" secondItem="NoV-ol-NfE" secondAttribute="top" constant="145" id="GpU-hv-aJt"/>
+                            <constraint firstItem="NoV-ol-NfE" firstAttribute="trailing" secondItem="7rW-3z-QxK" secondAttribute="trailing" constant="23" id="Pzb-t3-Svc"/>
+                            <constraint firstItem="NoV-ol-NfE" firstAttribute="trailing" secondItem="AR2-K1-nU3" secondAttribute="trailing" constant="84" id="fgL-BP-XcJ"/>
+                            <constraint firstItem="7rW-3z-QxK" firstAttribute="top" secondItem="AR2-K1-nU3" secondAttribute="bottom" constant="22" id="hPr-Rg-aEV"/>
+                            <constraint firstItem="SoV-fD-hfu" firstAttribute="leading" secondItem="NoV-ol-NfE" secondAttribute="leading" constant="85" id="hSV-LU-NYh"/>
+                            <constraint firstItem="AR2-K1-nU3" firstAttribute="top" secondItem="BNu-2Q-vWH" secondAttribute="top" constant="304" id="iPP-CB-b8j"/>
+                            <constraint firstItem="qJr-Ob-9TP" firstAttribute="centerX" secondItem="SoV-fD-hfu" secondAttribute="centerX" id="jwC-0D-Djk"/>
+                            <constraint firstItem="qJr-Ob-9TP" firstAttribute="centerX" secondItem="rom-dF-iWn" secondAttribute="centerX" id="qwI-y3-Txg"/>
+                            <constraint firstItem="AR2-K1-nU3" firstAttribute="leading" secondItem="NoV-ol-NfE" secondAttribute="leading" constant="80" id="rPq-od-CUK"/>
+                            <constraint firstItem="qJr-Ob-9TP" firstAttribute="leading" secondItem="NoV-ol-NfE" secondAttribute="leading" constant="125" id="rRE-W0-iVR"/>
+                            <constraint firstItem="TMm-pc-E87" firstAttribute="top" secondItem="AR2-K1-nU3" secondAttribute="bottom" constant="23" id="s49-4V-dLZ"/>
+                            <constraint firstItem="NoV-ol-NfE" firstAttribute="bottom" secondItem="SoV-fD-hfu" secondAttribute="bottom" constant="5" id="yTD-P7-U5c"/>
+                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="myT-4C-IQ7"/>
                     <connections>
                         <outlet property="adress" destination="TMm-pc-E87" id="cbc-zw-lJ8"/>
                         <outlet property="lastTimeAddress" destination="Ag0-uP-Ygb" id="aOj-7p-wVY"/>
+                        <segue destination="BYZ-38-t0r" kind="presentation" identifier="toP2P" id="565-qm-z0O"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xNK-5I-PBO" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1211.5942028985507" y="423.88392857142856"/>
         </scene>
+        <!--View Controller-->
+        <scene sceneID="QH9-Yg-XgU">
+            <objects>
+                <viewController wantsFullScreenLayout="YES" id="pdN-qq-ecP" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="lGx-ia-9VT">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="ようこそ" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hM1-20-eAb">
+                                <rect key="frame" x="172" y="161" width="70" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="次の画面でメアド設定してね" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CXl-Hg-4ee">
+                                <rect key="frame" x="93" y="216" width="229" height="74"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SOE-R7-d1T">
+                                <rect key="frame" x="184" y="298" width="46" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="いいよ"/>
+                            </button>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="cPB-Mx-NUH"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="4yK-z6-Ulc" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="387" y="1197"/>
+        </scene>
     </scenes>
+    <inferredMetricsTieBreakers>
+        <segue reference="tJg-pf-YpP"/>
+    </inferredMetricsTieBreakers>
     <resources>
         <image name="camera.rotate.fill" catalog="system" width="128" height="94"/>
         <image name="speaker.wave.2.fill" catalog="system" width="128" height="90"/>

@@ -14,6 +14,7 @@ import OneSignal
 import SocketIO
 
 var token: String?
+var peeridValue:Array<String>=[]
 
 //OneSignal
 class NotificationService: UNNotificationServiceExtension {
@@ -52,11 +53,12 @@ class ViewController: UIViewController, UITextFieldDelegate {
     fileprivate var mediaConnection: SKWMediaConnection?
     fileprivate var localStream: SKWMediaStream?
     fileprivate var remoteStream: SKWMediaStream?
-    var gmailaddress:String=uservalue[0]
+    var gmailaddress:String?=UserDefaults.standard.string(forKey: "usedMailAddress")
+//    var gmailaddress2:String=uservalue[0]
 //    var gmailpass:String=uservalue[1]
     let mailOfSender:String="usingfordevelop@gmail.com"
     let passOfSender:String="*umiush1"
-    var peeridValue:Array<String>=[]
+    let userDefaults = UserDefaults.standard
 
     //@IBOutlet weak var myPeerIdLabel: UILabel!
     @IBOutlet weak var localStreamView: SKWVideo!
@@ -67,10 +69,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
 //    @IBOutlet weak var muteButton: UIButton!
     @IBOutlet weak var toggleButton: UIButton!
     
-    
     func sendEmail() {
-        print("ボタンが押されました")
-        // Gmailの場合、Gmail側の設定で安全性の低いアプリへのアクセスを無効 -> 有効にする必要がある
         let smtpSession = MCOSMTPSession()
         smtpSession.hostname = "smtp.gmail.com"
         smtpSession.username = mailOfSender
@@ -78,10 +77,14 @@ class ViewController: UIViewController, UITextFieldDelegate {
         // 送信元のSMTPサーバーのusername（Gmailアドレス）
         smtpSession.password = passOfSender
         print("Gmailパスワード：",passOfSender)
-// 送信元のSMTPサーバーのpasword（Gmailパスワード）
+        // 送信元のSMTPサーバーのpasword（Gmailパスワード）
         smtpSession.port = 465
+        print("session.port465")
         smtpSession.authType = MCOAuthType.saslPlain
+        print("session.authType")
         smtpSession.connectionType = MCOConnectionType.TLS
+        print("connectionType.TLS")
+//        print("ここまでの情報",uservalue[0],gmailaddress,mailOfSender,peeridValue)
         smtpSession.connectionLogger = {(connectionID, type, data) in
             if data != nil {
                 if let string = NSString(data: data!, encoding: String.Encoding.utf8.rawValue){
@@ -91,12 +94,57 @@ class ViewController: UIViewController, UITextFieldDelegate {
         }
 
         let builder = MCOMessageBuilder()
-        builder.header.to = [MCOAddress(displayName: "西口さんへテスト", mailbox: gmailaddress)]
+        builder.header.to = [MCOAddress(displayName: "西口さんへテスト", mailbox: uservalue[0])]
         // 送信先の表示名とアドレス
         builder.header.from = MCOAddress(displayName: "山田太郎2さんから", mailbox: mailOfSender)   // 送信元の表示名とアドレス
         builder.header.subject = "Genchi Connect Me!"
 //        builder.htmlBody = "Yo Rool, this is a test message!"
-        builder.textBody = "私のIDは[\(self.peeridValue[0])]です。\nhttps://genchi.net/y.html?key=\(self.peeridValue[0])"
+        builder.textBody = "私のIDは[\(peeridValue[0])]です。こちらはsendEmail()による送信です。\nhttps://genchi.net/y.html?key=\(peeridValue[0])"
+        let rfc822Data = builder.data()
+        let sendOperation = smtpSession.sendOperation(with: rfc822Data)
+        sendOperation?.start { (error) -> Void in
+            if error != nil {
+                print("メールの送信に失敗しました！")
+            } else {
+                print("メールの送信が成功しました！")
+
+            }
+        }
+    }
+    
+    
+    func sendEmail2() {
+        // Gmailの場合、Gmail側の設定で安全性の低いアプリへのアクセスを無効 -> 有効にする必要がある
+        let smtpSession = MCOSMTPSession()
+        smtpSession.hostname = "smtp.gmail.com"
+        smtpSession.username = mailOfSender
+        print("Gmailアドレス：",mailOfSender)
+        // 送信元のSMTPサーバーのusername（Gmailアドレス）
+        smtpSession.password = passOfSender
+        print("Gmailパスワード：",passOfSender)
+        // 送信元のSMTPサーバーのpasword（Gmailパスワード）
+        smtpSession.port = 465
+        print("session.port465")
+        smtpSession.authType = MCOAuthType.saslPlain
+        print("session.authType")
+        smtpSession.connectionType = MCOConnectionType.TLS
+        print("connectionType.TLS")
+//        print("ここまでの情報",uservalue[0],gmailaddress,mailOfSender,peeridValue)
+        smtpSession.connectionLogger = {(connectionID, type, data) in
+            if data != nil {
+                if let string = NSString(data: data!, encoding: String.Encoding.utf8.rawValue){
+                    print("Connectionloggerはこれ、",string)
+                }
+            }
+        }
+
+        let builder = MCOMessageBuilder()
+        builder.header.to = [MCOAddress(displayName: "西口さんへテスト", mailbox:gmailaddress)]
+        // 送信先の表示名とアドレス
+        builder.header.from = MCOAddress(displayName: "山田太郎2さんから", mailbox: mailOfSender)   // 送信元の表示名とアドレス
+        builder.header.subject = "Genchi Connect Me!"
+//        builder.htmlBody = "Yo Rool, this is a test message!"
+        builder.textBody = "私のIDは[\(peeridValue[0])]です。こちらはsendEmail2()による送信です。\nhttps://genchi.net/y.html?key=\(peeridValue[0])"
         let rfc822Data = builder.data()
         let sendOperation = smtpSession.sendOperation(with: rfc822Data)
         sendOperation?.start { (error) -> Void in
@@ -111,6 +159,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
     
     @IBAction func toConnectionSettingsButton(_ sender: Any) {
 //        performSegue(withIdentifier: toConnectionSettings, sender: self)
+        mailSendConunt=false
     }
     
     
@@ -161,82 +210,27 @@ class ViewController: UIViewController, UITextFieldDelegate {
         print("タイマー実行中")
     }
     
-    //peerID更新時にpeerIDとdeviceTokenを送信
-//    func sending(){
-//
-//        let encoder = JSONEncoder()
-//        encoder.outputFormatting = .prettyPrinted
-//        encoder.dateEncodingStrategy = .iso8601
-//        let peer = try! encoder.encode(my_peerId)
-//        let data = try! encoder.encode(token)
-//
-//        let jsonPeer:String = String(data: peer, encoding: .utf8)!
-//        let jsonToken:String = String(data: data, encoding: .utf8)!
-//
-//        socket.emit("Token", jsonPeer,jsonToken)
-//        print("更新したpeerIDをonesignalへ送信しました")
-//    }
-//
-    //通話終了時に新しいpeerIDを生成、セットする
-//    func newPeer() {
-//        newPeerCount += 1 // 呼ばれるとカウントをあげる
-//        if newPeerCount == 1 { // カウントが1のとき実行できる
-//            let RandomString = randomString(length: 16) // 16桁のランダムな英数字を生成
-//            print("新しいpeerIDは",RandomString)
-//
-//            //userDefaultsにpeerIDをセット
-//            UserDefaults.standard.set(RandomString, forKey: "peerID")
-//            print("userDefaultsに新しいpeerIDをセットしました")
-//            print("peerIDを更新しました")
-//
-//            self.my_peerId = RandomString
-//            print("my_peerIdを更新しました")
-//
-//            self.sending()
-//            print("更新したpeerIDを送信しました")
-//
-//            self.setup()
-//        }else{
-//            print("連続したpeerIDの生成を防止しました")
-//        }
-//        countResetTimer = Timer.scheduledTimer(
-//                          timeInterval: 5,
-//                          target: self,
-//                          selector: #selector(self.countReset),
-//                          userInfo: nil,
-//                          repeats: true)
-//    }
-//
-//    @objc func countReset() {
-//        newPeerCount = 0
-//    }
-//
-//    //ランダムな英数字(peerID)を生成
-//    func randomString(length: Int) -> String {
-//
-//        let letters : NSString = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
-//        let len = UInt32(letters.length)
-//
-//        var randomString = ""
-//
-//        for _ in 0 ..< length {
-//            let rand = arc4random_uniform(len)
-//            var nextChar = letters.character(at: Int(rand))
-//            randomString += NSString(characters: &nextChar, length: 1) as String
-//        }
-//
-//        return randomString
-//    }
+    var mailSendConunt:Bool=false
+    @objc func firstTimeMailSend(){
+        print("firstTimeMailSend()が実行されたよ")
+        if changelog==true{
+            if mailSendConunt==false{
+                changelog=false
+                mailSendConunt=true
+                sendEmail()
+                print("無限ループしてるかも",mailSendConunt)
+            }
+            
+        }
+    }
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
-    
-        
-//        let appDelegate = UIApplication.shared.delegate as! AppDelegate
-//            appDelegate.viewController = self
-        
         //タイマー
         var timer = Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(sendingss), userInfo: nil, repeats: false)
+        
+        var oneTimeTimer = Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(firstTimeMailSend), userInfo: nil, repeats: true)
         
         socket = manager.defaultSocket
 
@@ -258,13 +252,16 @@ class ViewController: UIViewController, UITextFieldDelegate {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-    
-        
-        let userDefaults = UserDefaults.standard
+        userDefaults.register(defaults: ["usedMailAddress":"まずは新しい接続先を編集してください！"])
+       //初回起動をBoolで判定する
         let firstLunchKey = "firstLunchKey"
         if userDefaults.bool(forKey: firstLunchKey){
-//            performSegue(withIdentifier: toConnectionSettings, sender: self)
+            performSegue(withIdentifier: "toSignIn", sender: self)
+            userDefaults.set(false, forKey: firstLunchKey)
+            userDefaults.synchronize()
         }
+
+        
         
         if AppDelegate.shared.skywayAPIKey == nil || AppDelegate.shared.skywayDomain == nil {
             let alert = UIAlertController(title: "エラー", message: "APIKEYとDOMAINがAppDelegateに設定されていません", preferredStyle: .alert)
@@ -554,14 +551,19 @@ extension ViewController{
                 //my_peerIdに格納
                 self.my_peerId = peerId
                 print("あなたのpeerIdは: \(self.my_peerId!)")
-                self.peeridValue.insert(peerId, at: 0)
-                print("代入後の値はこれ",self.peeridValue)
+                peeridValue.insert(peerId, at: 0)
+                print("代入後の値はこれ",peeridValue)
 
                 //userDefaultsにpeerIDをセット
                 UserDefaults.standard.set(peerId, forKey: "peerID")
                 print("userDefaultsにpeerIDをセットしました")
                 
-                self.sendEmail()
+                if self.userDefaults.bool(forKey: "buttonCheck"){
+                    self.sendEmail2()
+                }
+                
+                
+                //self.sendEmail()
                 //OneSignalのデバイスTokenにpeerIdをタグ付け
 //                OneSignal.sendTag("PeerID", value: peerId)
 //                print("Tagを付与しました")

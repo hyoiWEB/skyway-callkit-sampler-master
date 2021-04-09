@@ -45,6 +45,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let firstlunch = [firstLunchKey:true]
         userDefaults.register(defaults: firstlunch)
         
+        
+        
+        
         setupPushKit()
         
         OneSignal.setLogLevel(.LL_VERBOSE, visualLevel: .LL_NONE)
