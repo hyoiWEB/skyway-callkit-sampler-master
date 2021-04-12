@@ -11,6 +11,7 @@ import UIKit
 
 var uservalue:Array<String> = []
 var changelog:Bool=false
+var updateJudge:Bool=false
 
 class signUpViewController: UIViewController, UITextFieldDelegate {
 
@@ -75,6 +76,7 @@ class signUpViewController: UIViewController, UITextFieldDelegate {
         self.dismiss(animated: true, completion: nil)
         userDefaults.set(true, forKey: "buttonCheck")
         changelog=true
+        updateJudge=true
     }
     
 

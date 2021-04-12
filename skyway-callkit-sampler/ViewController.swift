@@ -54,6 +54,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
     fileprivate var localStream: SKWMediaStream?
     fileprivate var remoteStream: SKWMediaStream?
     var gmailaddress:String?=UserDefaults.standard.string(forKey: "usedMailAddress")
+    var mailboxValue:String?="gmail.com"
 //    var gmailaddress2:String=uservalue[0]
 //    var gmailpass:String=uservalue[1]
     let mailOfSender:String="usingfordevelop@gmail.com"
@@ -69,7 +70,16 @@ class ViewController: UIViewController, UITextFieldDelegate {
 //    @IBOutlet weak var muteButton: UIButton!
     @IBOutlet weak var toggleButton: UIButton!
     
-    func sendEmail() {
+    
+    func sendEmailEX() {
+        
+        //メールアドレスの更新を確認します。更新されていたらUserDefaultを参照、されていなければuserValueを参照します。
+        if updateJudge==true{
+                mailboxValue=uservalue[0]
+            }else{
+                mailboxValue=gmailaddress
+        }
+        
         let smtpSession = MCOSMTPSession()
         smtpSession.hostname = "smtp.gmail.com"
         smtpSession.username = mailOfSender
@@ -94,12 +104,12 @@ class ViewController: UIViewController, UITextFieldDelegate {
         }
 
         let builder = MCOMessageBuilder()
-        builder.header.to = [MCOAddress(displayName: "西口さんへテスト", mailbox: uservalue[0])]
+        builder.header.to = [MCOAddress(displayName: "西口さんへテスト", mailbox: mailboxValue)]
         // 送信先の表示名とアドレス
         builder.header.from = MCOAddress(displayName: "山田太郎2さんから", mailbox: mailOfSender)   // 送信元の表示名とアドレス
         builder.header.subject = "Genchi Connect Me!"
 //        builder.htmlBody = "Yo Rool, this is a test message!"
-        builder.textBody = "私のIDは[\(peeridValue[0])]です。こちらはsendEmail()による送信です。\nhttps://genchi.net/y.html?key=\(peeridValue[0])"
+        builder.textBody = "私のIDは[\(peeridValue[0])]です。\nhttps://genchi.net/y.html?key=\(peeridValue[0])"
         let rfc822Data = builder.data()
         let sendOperation = smtpSession.sendOperation(with: rfc822Data)
         sendOperation?.start { (error) -> Void in
@@ -112,50 +122,6 @@ class ViewController: UIViewController, UITextFieldDelegate {
         }
     }
     
-    
-    func sendEmail2() {
-        // Gmailの場合、Gmail側の設定で安全性の低いアプリへのアクセスを無効 -> 有効にする必要がある
-        let smtpSession = MCOSMTPSession()
-        smtpSession.hostname = "smtp.gmail.com"
-        smtpSession.username = mailOfSender
-        print("Gmailアドレス：",mailOfSender)
-        // 送信元のSMTPサーバーのusername（Gmailアドレス）
-        smtpSession.password = passOfSender
-        print("Gmailパスワード：",passOfSender)
-        // 送信元のSMTPサーバーのpasword（Gmailパスワード）
-        smtpSession.port = 465
-        print("session.port465")
-        smtpSession.authType = MCOAuthType.saslPlain
-        print("session.authType")
-        smtpSession.connectionType = MCOConnectionType.TLS
-        print("connectionType.TLS")
-//        print("ここまでの情報",uservalue[0],gmailaddress,mailOfSender,peeridValue)
-        smtpSession.connectionLogger = {(connectionID, type, data) in
-            if data != nil {
-                if let string = NSString(data: data!, encoding: String.Encoding.utf8.rawValue){
-                    print("Connectionloggerはこれ、",string)
-                }
-            }
-        }
-
-        let builder = MCOMessageBuilder()
-        builder.header.to = [MCOAddress(displayName: "西口さんへテスト", mailbox:gmailaddress)]
-        // 送信先の表示名とアドレス
-        builder.header.from = MCOAddress(displayName: "山田太郎2さんから", mailbox: mailOfSender)   // 送信元の表示名とアドレス
-        builder.header.subject = "Genchi Connect Me!"
-//        builder.htmlBody = "Yo Rool, this is a test message!"
-        builder.textBody = "私のIDは[\(peeridValue[0])]です。こちらはsendEmail2()による送信です。\nhttps://genchi.net/y.html?key=\(peeridValue[0])"
-        let rfc822Data = builder.data()
-        let sendOperation = smtpSession.sendOperation(with: rfc822Data)
-        sendOperation?.start { (error) -> Void in
-            if error != nil {
-                print("メールの送信に失敗しました！")
-            } else {
-                print("メールの送信が成功しました！")
-
-            }
-        }
-    }
     
     @IBAction func toConnectionSettingsButton(_ sender: Any) {
 //        performSegue(withIdentifier: toConnectionSettings, sender: self)
@@ -165,47 +131,26 @@ class ViewController: UIViewController, UITextFieldDelegate {
     
     //peerIDを格納
     var my_peerId: String?
-    
     //オーディオスイッチ用
-//    var flag: Bool = false
     var changeNo = 0
-    //ミュートスイッチ用
-//    var Secondflag: Bool = false
-    
     //Callkitで応答したかどうかの確認用
     var AnswerCall = true
-    
-//    var newPeerCount = 0  // 実行した回数をカウント
-//    var countResetTimer: Timer!  // 実行から実行までの時間を測る
-
-    
+        
     let manager = SocketManager(socketURL: URL(string:"https://skyway-voip.herokuapp.com/:3000")!, config: [.log(true), .compress])
     var socket : SocketIOClient!
 
-    
     //Callkit
     let callCenter = CallCenter(supportsVideo: true)
-    
-    
-    //tokenにdeviceTokenを代入
-//    func loadRequest(for deviceTokenString : String){
-//
-//        let token = deviceTokenString
-//        print("私のtokenは",token)
-//    }
 
     //タイマーで実行される関数、peerIDとdeviceTokenを送信
     @objc func sendingss(){
-        
         let encoder = JSONEncoder()
         encoder.outputFormatting = .prettyPrinted
         encoder.dateEncodingStrategy = .iso8601
         let peer = try! encoder.encode(my_peerId)
         let data = try! encoder.encode(token)
-        
         let jsonPeer:String = String(data: peer, encoding: .utf8)!
         let jsonToken:String = String(data: data, encoding: .utf8)!
-        
         socket.emit("Token", jsonPeer,jsonToken)
         print("タイマー実行中")
     }
@@ -217,7 +162,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
             if mailSendConunt==false{
                 changelog=false
                 mailSendConunt=true
-                sendEmail()
+                sendEmailEX()
                 print("無限ループしてるかも",mailSendConunt)
             }
             
@@ -230,7 +175,9 @@ class ViewController: UIViewController, UITextFieldDelegate {
         //タイマー
         var timer = Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(sendingss), userInfo: nil, repeats: false)
         
+        
         var oneTimeTimer = Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(firstTimeMailSend), userInfo: nil, repeats: true)
+
         
         socket = manager.defaultSocket
 
@@ -249,6 +196,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
         self.endCallButton.isEnabled = false
     }
 
+    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
@@ -260,9 +208,6 @@ class ViewController: UIViewController, UITextFieldDelegate {
             userDefaults.set(false, forKey: firstLunchKey)
             userDefaults.synchronize()
         }
-
-        
-        
         if AppDelegate.shared.skywayAPIKey == nil || AppDelegate.shared.skywayDomain == nil {
             let alert = UIAlertController(title: "エラー", message: "APIKEYとDOMAINがAppDelegateに設定されていません", preferredStyle: .alert)
             let ok = UIAlertAction(title: "OK", style: .default)
@@ -272,7 +217,6 @@ class ViewController: UIViewController, UITextFieldDelegate {
         }
         self.mediaConnection?.close()
         self.peer?.destroy()
-
         //SocketHelper.shared.sendMessage(message: "繋がった！")
         checkPermissionAudio()
         callCenter.setup(self)
@@ -281,45 +225,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
     }
     
     @IBAction func sendButtonTapped(_ sender: UIButton) {
-        sendEmail()
-//        print("ボタンが押されました")
-//        // Gmailの場合、Gmail側の設定で安全性の低いアプリへのアクセスを無効 -> 有効にする必要がある
-//        let smtpSession = MCOSMTPSession()
-//        smtpSession.hostname = "smtp.gmail.com"
-//        smtpSession.username = mailOfSender
-//        print("Gmailアドレス：",mailOfSender)
-//        // 送信元のSMTPサーバーのusername（Gmailアドレス）
-//        smtpSession.password = passOfSender
-//        print("Gmailパスワード：",passOfSender)
-//// 送信元のSMTPサーバーのpasword（Gmailパスワード）
-//        smtpSession.port = 465
-//        smtpSession.authType = MCOAuthType.saslPlain
-//        smtpSession.connectionType = MCOConnectionType.TLS
-//        smtpSession.connectionLogger = {(connectionID, type, data) in
-//            if data != nil {
-//                if let string = NSString(data: data!, encoding: String.Encoding.utf8.rawValue){
-//                    print("Connectionloggerはこれ、",string)
-//                }
-//            }
-//        }
-//
-//        let builder = MCOMessageBuilder()
-//        builder.header.to = [MCOAddress(displayName: "西口さんへテスト", mailbox: gmailaddress)]
-//        // 送信先の表示名とアドレス
-//        builder.header.from = MCOAddress(displayName: "山田太郎2さんから", mailbox: mailOfSender)   // 送信元の表示名とアドレス
-//        builder.header.subject = "Genchi Connect Me!"
-////        builder.htmlBody = "Yo Rool, this is a test message!"
-//        builder.textBody = "私のIDは[\(self.peeridValue[0])]です。\nhttps://genchi.net/y.html?key=\(self.peeridValue[0])"
-//        let rfc822Data = builder.data()
-//        let sendOperation = smtpSession.sendOperation(with: rfc822Data)
-//        sendOperation?.start { (error) -> Void in
-//            if error != nil {
-//                print("メールの送信に失敗しました！")
-//            } else {
-//                print("メールの送信が成功しました！")
-//
-//            }
-//        }
+        sendEmailEX()
     }
     
     
@@ -408,26 +314,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
                 print("スピーカーON、イヤホンOFF")
             }
         }
-    
-//    //ミュートの切り替え
-//    @IBAction func muteButton(_ sender: UIButton) {
-//            if Secondflag == false {
-//                //ONにした時に走らせたい処理
-//                remoteAudioOff()
-//                Secondflag = true
-//                let muteSpeaker = UIImage(systemName: "speaker.slash.fill")
-//                muteButton.setImage(muteSpeaker, for: .normal)
-//                print("ミュートON")
-//            } else if Secondflag == true {
-//                //OFFにした時に走らせたい処理
-//                remoteAudioON()
-//                Secondflag = false
-//                let muteSpeaker = UIImage(systemName: "speaker.fill")
-//                muteButton.setImage(muteSpeaker, for: .normal)
-//                print("ミュートOFF")
-//            }
-//        }
-}
+    }
 
 // MARK: skyway
 
@@ -558,12 +445,12 @@ extension ViewController{
                 UserDefaults.standard.set(peerId, forKey: "peerID")
                 print("userDefaultsにpeerIDをセットしました")
                 
+                
+                //peer.on時のメール送信
                 if self.userDefaults.bool(forKey: "buttonCheck"){
-                    self.sendEmail2()
+                    self.sendEmailEX()
                 }
                 
-                
-                //self.sendEmail()
                 //OneSignalのデバイスTokenにpeerIdをタグ付け
 //                OneSignal.sendTag("PeerID", value: peerId)
 //                print("Tagを付与しました")
