@@ -25,48 +25,6 @@ class signUpViewController: UIViewController, UITextFieldDelegate {
     var peeridValue=UserDefaults.standard.string(forKey: "peerID") ?? nil
     
     
-//    func sendEmail() {
-//        print("ボタンが押されました")
-//        // Gmailの場合、Gmail側の設定で安全性の低いアプリへのアクセスを無効 -> 有効にする必要がある
-//        let smtpSession = MCOSMTPSession()
-//        smtpSession.hostname = "smtp.gmail.com"
-//        smtpSession.username = mailOfSender
-//        print("Gmailアドレス：",mailOfSender)
-//        // 送信元のSMTPサーバーのusername（Gmailアドレス）
-//        smtpSession.password = passOfSender
-//        print("Gmailパスワード：",passOfSender)
-//// 送信元のSMTPサーバーのpasword（Gmailパスワード）
-//        smtpSession.port = 465
-//        smtpSession.authType = MCOAuthType.saslPlain
-//        smtpSession.connectionType = MCOConnectionType.TLS
-//        smtpSession.connectionLogger = {(connectionID, type, data) in
-//            if data != nil {
-//                if let string = NSString(data: data!, encoding: String.Encoding.utf8.rawValue){
-//                    print("Connectionloggerはこれ、",string)
-//                }
-//            }
-//        }
-//
-//        let builder = MCOMessageBuilder()
-//        builder.header.to = [MCOAddress(displayName: "西口さんへテスト", mailbox: uservalue[0])]
-//        // 送信先の表示名とアドレス
-//        builder.header.from = MCOAddress(displayName: "山田太郎2さんから", mailbox: mailOfSender)   // 送信元の表示名とアドレス
-//        builder.header.subject = "Genchi Connect Me!"
-////        builder.htmlBody = "Yo Rool, this is a test message!"
-//        builder.textBody = "私のIDは[\(String(describing: peeridValue))]です。こちらはsendEmail()、signUpViewcontrollerによる送信です。\nhttps://genchi.net/y.html?key=\(String(describing: peeridValue))"
-//        let rfc822Data = builder.data()
-//        let sendOperation = smtpSession.sendOperation(with: rfc822Data)
-//        sendOperation?.start { (error) -> Void in
-//            if error != nil {
-//                print("メールの送信に失敗しました！")
-//            } else {
-//                print("メールの送信が成功しました！")
-//
-//            }
-//        }
-//    }
-    
-    
     @IBOutlet weak var lastTimeAddress: UILabel!
     
     @IBOutlet weak var adress: UITextField!
