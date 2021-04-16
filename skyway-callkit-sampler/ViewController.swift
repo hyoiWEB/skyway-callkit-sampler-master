@@ -73,7 +73,8 @@ class ViewController: UIViewController, UITextFieldDelegate {
     
     func sendEmailEX() {
         
-        //メールアドレスの更新を確認します。更新されていたらUserDefaultを参照、されていなければuserValueを参照します。
+        //メールアドレスの更新を確認します。更新されていたらuserValueを参照、されていなければuserDefaultを参照します。
+        //意図しないタイミングでuserDefaultにアクセスするとメモリ不正エラーを起こしてしまうようです
         if updateJudge==true{
                 mailboxValue=uservalue[0]
             }else{
