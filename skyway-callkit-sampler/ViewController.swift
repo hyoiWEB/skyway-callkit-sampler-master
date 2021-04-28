@@ -137,7 +137,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
     //Callkitで応答したかどうかの確認用
     var AnswerCall = true
         
-    let manager = SocketManager(socketURL: URL(string:"https://skyway-voip.herokuapp.com/:3000")!, config: [.log(true), .compress])
+    let manager = SocketManager(socketURL: URL(string:"https://onesignal-server.herokuapp.com/:3000")!, config: [.log(true), .compress])
     var socket : SocketIOClient!
 
     //Callkit
